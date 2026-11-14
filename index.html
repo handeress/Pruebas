@@ -3,132 +3,188 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Casa de ejemplo, propuesta 1</title>
+<title>Casa de ejemplo, primer diseño | TAUKAR Espacios</title>
 <meta name="robots" content="noindex">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
+/* Paleta tomada del documento de especificaciones de TAUKAR Espacios */
 :root{
-  --niebla:#E6EBE8;      /* fondo: neblina de sabana */
-  --cal:#FBFCFA;         /* superficies */
-  --pino:#1D3832;        /* verde profundo: títulos y bloques */
-  --teca:#A9692F;        /* madera: acento y notas de guía */
-  --carbon:#20262A;      /* texto */
-  --piedra:#5E6B6A;      /* texto secundario */
-  --linea:#B9C4C0;
-  --fuente:"Archivo","Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --verde-claro:#E3EACF;   /* fondo degradado de las portadas */
+  --caqui:#ABAC8A;         /* barras del logo y "ESPACIOS" */
+  --gris:#595959;          /* "TAUKAR" y texto */
+  --oliva:#424D22;         /* títulos */
+  --blanco:#FFFFFF;
+  --linea:#D5D8C4;
+  --madera:#8A6A3A;        /* solo para las notas de guía */
+  --fuente:"Avenir Next","Avenir","Jost","Nunito Sans",system-ui,sans-serif;
+  --op-fondo:#E3EACF; --op-acento:#424D22;
 }
+body[data-op="A"]{--op-fondo:#E3EACF;--op-acento:#424D22}   /* verde claro de la marca */
+body[data-op="B"]{--op-fondo:#E9E6D2;--op-acento:#7B7C52}   /* arena, hacia el caqui */
+body[data-op="C"]{--op-fondo:#DFE3E1;--op-acento:#595959}   /* gris niebla, hacia el gris del logo */
 *{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
-body{margin:0;background:var(--niebla);color:var(--carbon);font-family:var(--fuente);font-size:17px;line-height:1.55}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--blanco);color:var(--gris);font-family:var(--fuente);font-weight:400;font-size:17px;line-height:1.55}
 img,svg,canvas{display:block;max-width:100%}
 button{font:inherit;color:inherit}
-:focus-visible{outline:3px solid var(--teca);outline-offset:2px}
+:focus-visible{outline:3px solid var(--oliva);outline-offset:2px}
 
-/* Franja de borrador (solo para Andrés) */
-.borrador{background:var(--teca);color:#fff;font-size:14px;padding:8px 16px;display:flex;gap:12px;align-items:center;justify-content:space-between}
-.borrador button{background:transparent;border:1px solid rgba(255,255,255,.7);color:#fff;border-radius:4px;padding:4px 10px;cursor:pointer;white-space:nowrap}
-.guia{border-left:4px solid var(--teca);background:rgba(169,105,47,.10);color:#5b3a1b;font-size:15px;line-height:1.45;padding:10px 12px;margin:16px 0 0;max-width:none}
-.guia b{font-weight:700}
+.borrador{background:var(--madera);color:#fff;font-size:14px;padding:8px 16px;display:flex;gap:12px;align-items:center;justify-content:space-between}
+.borrador button{background:transparent;border:1px solid rgba(255,255,255,.7);color:#fff;padding:4px 10px;cursor:pointer;white-space:nowrap}
+.guia{border-left:4px solid var(--madera);background:rgba(138,106,58,.10);color:#5b4322;font-size:15px;line-height:1.45;padding:10px 12px;margin:16px 0 0;max-width:none}
+.guia b{font-weight:600}
 body.sin-guia .guia,body.sin-guia .borrador{display:none}
 
-/* Portada: el modelo es lo primero que se ve */
-.portada{position:relative;background:linear-gradient(#DDE6E6 0%,#E9EEEA 55%,#CBD5CC 100%);transition:background .5s}
-.portada.tarde{background:linear-gradient(#28323F 0%,#7B5E57 52%,#C98A54 78%,#39443E 100%)}
-#modelo{width:100%;height:62vh;min-height:360px;max-height:640px;touch-action:pan-y;cursor:grab}
-#modelo:active{cursor:grabbing}
-.sin3d{display:none;padding:80px 20px;text-align:center;color:var(--piedra)}
-.controles{position:absolute;left:0;right:0;bottom:12px;display:flex;flex-wrap:wrap;gap:8px;justify-content:center;padding:0 12px}
-.controles button{background:rgba(251,252,250,.92);border:1px solid var(--linea);border-radius:999px;padding:8px 13px;font-size:15px;font-weight:600;cursor:pointer;min-height:42px}
-.controles button[aria-pressed="true"]{background:var(--pino);border-color:var(--pino);color:#fff}
-.pista{position:absolute;top:12px;right:14px;font-size:13px;color:var(--pino);background:rgba(251,252,250,.75);border-radius:4px;padding:3px 8px}
-.portada.tarde .pista{color:#fff;background:rgba(0,0,0,.3)}
+/* Portada, como la del documento: degradado verde a blanco, título espaciado y árbol */
+.cubierta{position:relative;overflow:hidden;background:linear-gradient(100deg,var(--verde-claro) 0%,#F4F7EA 46%,#fff 72%);padding:44px 20px 0}
+.cubierta .arbol{position:absolute;right:-34px;top:8px;height:62%;width:auto;mix-blend-mode:multiply;opacity:.5;pointer-events:none}
+.cubierta .texto{position:relative;max-width:760px;margin:0 auto;padding-right:56px}
+.cubierta h1{margin:0;font-weight:400;font-size:clamp(30px,9vw,54px);line-height:1.15;letter-spacing:.24em;text-transform:uppercase;color:var(--oliva)}
+.cubierta .sub{margin:14px 0 0;font-weight:300;font-size:18px;color:var(--gris)}
+.ficha{margin:18px 0 0;padding:0;list-style:none;font-weight:300;font-size:16px;line-height:1.7}
+.ficha b{font-weight:500;color:var(--oliva)}
+.firma{position:relative;margin:34px -20px 0;background:#fff;padding:14px 20px 16px;display:flex;flex-wrap:wrap;align-items:center;gap:10px 22px}
+.firma img{width:230px;height:auto}
+.firma address{font-style:normal;font-weight:300;font-size:13px;letter-spacing:.14em;line-height:1.6}
 
-.titulo{background:var(--pino);color:#fff;padding:26px 20px 30px}
-.titulo h1{font-stretch:62%;font-weight:800;font-size:clamp(46px,13vw,96px);line-height:.92;letter-spacing:-.01em;margin:0 0 14px;max-width:11ch}
-.titulo p{margin:0;max-width:52ch;font-size:18px;color:#DCE6E1}
-.ficha{display:flex;flex-wrap:wrap;gap:6px 22px;margin:18px 0 0;padding:0;list-style:none;font-size:15px;color:#B9CCC4}
-.ficha b{color:#fff;font-weight:700}
-
-/* Selector de opción: se queda pegado arriba al bajar */
-.selector{position:sticky;top:0;z-index:5;background:var(--cal);border-bottom:1px solid var(--linea);padding:8px 12px 9px}
-.selector .fila{display:flex;gap:6px;max-width:760px;margin:0 auto}
-.selector button{flex:1;background:transparent;border:1.5px solid var(--pino);border-radius:4px;padding:7px 4px;cursor:pointer;line-height:1.15;min-height:48px;color:var(--pino)}
-.selector button b{display:block;font-stretch:62%;font-weight:800;font-size:22px}
-.selector button span{font-size:13px}
-.selector button[aria-pressed="true"]{background:var(--pino);color:#fff}
-.selector .lema{max-width:760px;margin:7px auto 0;font-size:14px;color:var(--piedra);line-height:1.3}
-.selector .lema b{color:var(--teca)}
-
-main{max-width:760px;margin:0 auto;padding:0 20px 40px}
-section{padding-top:48px}
-.cambia{font-size:14px;font-weight:700;color:var(--teca);margin:0 0 4px}
-
-/* Título de sección dibujado como una cota de plano */
-h2{font-stretch:62%;font-weight:800;font-size:34px;line-height:1;margin:0 0 6px;color:var(--pino)}
-.cota{position:relative;height:13px;margin:0 0 18px;border-bottom:1.5px solid var(--pino)}
-.cota::before,.cota::after{content:"";position:absolute;bottom:-6px;width:1.5px;height:13px;background:var(--pino);transform:rotate(35deg)}
-.cota::before{left:3px}.cota::after{right:3px}
+main{max-width:760px;margin:0 auto;padding:0 20px}
+section{padding-top:44px}
+/* Título de sección con las barras del logo */
+.rot{display:flex;align-items:flex-start;gap:12px;margin:0 0 16px}
+.barras{flex:none;width:30px;padding-top:5px}
+.barras i{display:block;height:7px;background:var(--caqui);margin-bottom:4px}
+.barras i:nth-child(1),.barras i:nth-child(2){width:9px}
+.barras i:nth-child(3){width:30px;margin-bottom:0}
+h2{margin:0;font-weight:400;font-size:22px;line-height:1.25;letter-spacing:.2em;text-transform:uppercase;color:var(--gris)}
+h2 small{display:block;font-size:13px;letter-spacing:.34em;color:var(--caqui);font-weight:500;margin-top:3px}
 p{margin:0 0 14px;max-width:62ch}
-.menor{color:var(--piedra);font-size:15px}
+.programa{margin:0;padding:0;list-style:none;border-top:1px solid var(--linea)}
+.programa li{padding:11px 0 11px 22px;border-bottom:1px solid var(--linea);position:relative}
+.programa li::before{content:"";position:absolute;left:0;top:19px;width:9px;height:7px;background:var(--caqui)}
 
-.plano{background:var(--cal);border:1px solid var(--linea);margin:6px -8px 0;padding:8px}
+/* Bloque de opciones: el color de fondo cambia con cada opción */
+.opciones-bloque{background:var(--op-fondo);margin-top:44px;transition:background .35s}
+.selector{position:sticky;top:0;z-index:5;background:var(--op-fondo);padding:10px 12px 8px;transition:background .35s;border-bottom:1px solid rgba(0,0,0,.06)}
+.selector .fila{display:flex;gap:6px;max-width:760px;margin:0 auto}
+.selector button{flex:1;background:rgba(255,255,255,.55);border:1.5px solid var(--op-acento);padding:7px 4px 6px;cursor:pointer;line-height:1.2;min-height:50px;color:var(--op-acento)}
+.selector button b{display:block;font-weight:400;font-size:21px;letter-spacing:.1em}
+.selector button span{font-size:12px;letter-spacing:.16em;text-transform:uppercase}
+.selector button[aria-pressed="true"]{background:var(--op-acento);color:#fff}
+.lema{max-width:760px;margin:0 auto;padding:16px 20px 14px}
+.lema h3{margin:0 0 6px;font-weight:400;font-size:20px;letter-spacing:.2em;text-transform:uppercase;color:var(--op-acento)}
+.lema h3 em{font-style:normal;font-size:11px;letter-spacing:.14em;background:var(--op-acento);color:#fff;padding:2px 7px;margin-left:8px;vertical-align:3px;white-space:nowrap}
+.lema p{margin:0;font-weight:300;font-size:17px;line-height:1.45;color:var(--gris)}
+
+.portada{position:relative}
+.portada.tarde{background:linear-gradient(#3B4252 0%,#8A7460 55%,#C9A56F 82%,transparent 100%)}
+#modelo{width:100%;height:58vh;min-height:340px;max-height:620px;touch-action:pan-y;cursor:grab}
+#modelo:active{cursor:grabbing}
+.sin3d{display:none;padding:80px 20px;text-align:center}
+.controles{position:absolute;left:0;right:0;bottom:12px;display:flex;flex-wrap:wrap;gap:6px;justify-content:center;padding:0 10px}
+.controles button{background:rgba(255,255,255,.92);border:1px solid var(--caqui);padding:8px 11px;font-size:14px;letter-spacing:.04em;cursor:pointer;min-height:42px;color:var(--gris)}
+.controles button[aria-pressed="true"]{background:var(--gris);border-color:var(--gris);color:#fff}
+.pista{position:absolute;top:10px;right:12px;font-size:12px;letter-spacing:.08em;background:rgba(255,255,255,.8);padding:3px 8px}
+
+.areas-bloque{max-width:760px;margin:0 auto;padding:18px 20px 30px}
+table{width:100%;border-collapse:collapse;font-size:16px}
+th,td{text-align:left;padding:8px 0;border-bottom:1px solid rgba(89,89,89,.22);vertical-align:top;font-weight:400}
+.areas td:first-child{width:30px;color:var(--op-acento);font-weight:600}
+.areas td:last-child{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.areas tr.total td{font-weight:600;color:var(--op-acento);border-bottom:2px solid var(--op-acento)}
+.areas tr.inv td{font-weight:300}
+.areas caption{caption-side:top;text-align:left;font-size:13px;letter-spacing:.3em;text-transform:uppercase;color:var(--op-acento);padding-bottom:6px;font-weight:500}
+
+.cambia{font-size:12px;letter-spacing:.26em;text-transform:uppercase;color:var(--op-acento);margin:0 0 10px;font-weight:500}
+.plano{background:var(--op-fondo);margin:0 -8px;padding:8px;transition:background .35s}
 .plano text{font-family:var(--fuente)}
-.recorrido{margin:18px 0 0;padding:0 0 0 22px}
-.recorrido li{margin:0 0 8px;padding-left:4px}
-.recorrido li::marker{font-weight:800;color:var(--teca)}
+.vive{margin:16px 0 0;font-weight:300}
 
-.vistas{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:6px}
-.vista{aspect-ratio:4/5;border:1.5px dashed var(--piedra);display:flex;flex-direction:column;justify-content:flex-end;padding:12px;color:var(--piedra);font-size:14px;line-height:1.3;background:
-  repeating-linear-gradient(135deg,transparent 0 14px,rgba(94,107,106,.08) 14px 15px)}
-.vista strong{font-stretch:62%;font-size:22px;color:var(--pino);line-height:1.05}
+.vistas{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.vista{aspect-ratio:4/5;border:1.5px dashed var(--caqui);display:flex;flex-direction:column;justify-content:flex-end;padding:12px;font-size:14px;line-height:1.3;font-weight:300;background:var(--op-fondo);transition:background .35s}
+.vista strong{font-weight:400;font-size:15px;letter-spacing:.18em;text-transform:uppercase;color:var(--op-acento);margin-bottom:4px}
 @media(min-width:620px){.vista{aspect-ratio:3/2}}
 
-table{width:100%;border-collapse:collapse;font-size:16px;margin-top:6px}
-th,td{text-align:left;padding:9px 0;border-bottom:1px solid var(--linea);vertical-align:top}
-.areas td:last-child,.areas th:last-child{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
-tr.total td{font-weight:800;border-bottom:2px solid var(--pino);color:var(--pino)}
-.rango{background:var(--pino);color:#fff;padding:18px;margin-top:20px}
-.rango .cifra{font-stretch:62%;font-weight:800;font-size:36px;line-height:1.05;margin:2px 0 8px}
-.rango p{color:#DCE6E1;margin:0;font-size:15px}
-
-/* Comparativo: tres columnas angostas que caben en el celular */
 .compara{font-size:14px;line-height:1.3;table-layout:fixed}
-.compara th,.compara td{padding:8px 6px 8px 4px;overflow-wrap:anywhere}
-.compara thead th{font-stretch:62%;font-weight:800;font-size:22px;color:var(--pino);border-bottom:2px solid var(--pino)}
-.compara thead th small{display:block;font-stretch:100%;font-size:12px;font-weight:600;color:var(--piedra)}
-.compara th[scope=row]{width:23%;font-weight:600;color:var(--piedra);font-size:13px;padding-left:0}
-.compara td.activa,.compara th.activa{background:rgba(29,56,50,.08)}
-.compara .rec{display:inline-block;background:var(--teca);color:#fff;font-stretch:100%;font-size:10px;font-weight:700;border-radius:3px;padding:1px 3px;margin-top:3px;white-space:nowrap}
+.compara th,.compara td{padding:8px 6px 8px 5px;hyphens:auto;border-bottom:1px solid var(--linea)}
+.compara thead th{font-weight:400;font-size:20px;letter-spacing:.1em;color:var(--gris);border-bottom:2px solid var(--gris)}
+.compara thead th small{display:block;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--caqui);font-weight:500}
+.compara th[scope=row]{width:23%;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--caqui);font-weight:500;padding-left:0}
+.compara .cA{background:#EEF2E1}.compara .cB{background:#F2F0E3}.compara .cC{background:#ECEFED}
+.compara thead th.activa{box-shadow:inset 0 -4px 0 var(--op-acento)}
+.compara .rec{display:inline-block;background:var(--oliva);color:#fff;font-size:9.5px;letter-spacing:.06em;font-weight:500;padding:1px 4px;margin-top:3px;white-space:nowrap}
 
-.pregunta{background:var(--cal);border:1px solid var(--linea);padding:16px;margin-top:12px}
-.pregunta h3{margin:0 0 6px;font-size:19px;line-height:1.25;color:var(--pino)}
-.pregunta p{font-size:15px;color:var(--piedra);margin:0 0 12px}
-.opciones{display:flex;flex-wrap:wrap;gap:8px}
-.opciones a{flex:1 1 130px;text-align:center;text-decoration:none;font-weight:700;color:#fff;background:var(--pino);border-radius:4px;padding:12px 10px;min-height:46px}
-.opciones a.otra{background:transparent;color:var(--pino);border:1.5px solid var(--pino)}
-
-.sigue{margin:8px 0 0;padding:0;list-style:none}
-.sigue li{padding:10px 0;border-bottom:1px solid var(--linea)}
-.sigue b{display:inline-block;min-width:6.5em;color:var(--pino)}
-footer{background:var(--pino);color:#B9CCC4;font-size:14px;padding:22px 20px;margin-top:20px}
-footer p{max-width:760px;margin:0 auto}
-footer b{color:#fff}
-@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.portada{transition:none}}
+.sigue{margin:0;padding:0;list-style:none;border-top:1px solid var(--linea)}
+.sigue li{padding:11px 0;border-bottom:1px solid var(--linea);font-weight:300}
+.sigue b{display:inline-block;min-width:7em;font-weight:500;color:var(--oliva)}
+footer{margin-top:48px;background:linear-gradient(100deg,var(--verde-claro) 0%,#F4F7EA 50%,#fff 80%);padding:26px 20px 30px}
+footer .dentro{max-width:760px;margin:0 auto}
+footer img{width:210px;background:#fff}
+footer address{font-style:normal;font-weight:300;font-size:13px;letter-spacing:.14em;line-height:1.7;margin-top:12px}
+footer p{font-size:13px;font-weight:300;margin:14px 0 0}
+@media(prefers-reduced-motion:reduce){.opciones-bloque,.selector,.plano,.vista{transition:none}}
 </style>
 </head>
-<body>
+<body data-op="A">
 
 <div class="borrador">
   <span>Borrador de guía. Las notas en color madera son para ti, no para el cliente.</span>
   <button type="button" id="verGuia">Ver como cliente</button>
 </div>
 
-<header>
+<header class="cubierta">
+  <img class="arbol" src="arbol.png" alt="">
+  <div class="texto">
+    <h1>Casa<br>de ejemplo</h1>
+    <p class="sub">Primer diseño: tres opciones para comparar</p>
+    <ul class="ficha">
+      <li><b>Propuesta 1</b>, 13 de noviembre de 2026</li>
+      <li>Para <b>familia Ejemplo</b></li>
+    </ul>
+  </div>
+  <div class="firma">
+    <img src="taukar-espacios.png" alt="TAUKAR Espacios">
+    <address>proyectos@arqteka.com<br>Cra 13 N. 93 – 53<br>Cel 3159762675</address>
+  </div>
+</header>
+
+<main>
+  <p class="guia"><b>Guía, portada.</b> Sigue la portada de tus especificaciones: degradado verde, título espaciado, árbol y logo. Cambia el nombre de la casa, la fecha y el cliente.</p>
+
+  <section id="presentacion">
+    <div class="rot"><div class="barras"><i></i><i></i><i></i></div><h2>Presentación</h2></div>
+    <p>En TAUKAR Espacios diseñamos y construimos casas y cabañas campestres. Este documento reúne el primer diseño de su casa: tres maneras de organizar el mismo programa, para que las recorran, las comparen y nos digan cuál se parece más a la forma en que quieren vivir.</p>
+    <p>Cada opción se puede girar en 3D, ver sin cubierta y ubicar en el lote. Debajo de cada una están sus áreas y su planta. Ninguna es definitiva: la propuesta siguiente se arma con lo que escojan y lo que quieran cambiar.</p>
+    <p class="guia"><b>Guía, presentación.</b> Texto de relleno escrito por Claude: cámbialo por tu presentación. Dos párrafos bastan: quién eres y qué va a encontrar el cliente.</p>
+  </section>
+
+  <section id="programa">
+    <div class="rot"><div class="barras"><i></i><i></i><i></i></div><h2>Programa del proyecto</h2></div>
+    <ul class="programa">
+      <li>Alcoba principal con baño y vestier</li>
+      <li>Alcoba auxiliar (dos camas sencillas y closet)</li>
+      <li>Sala, comedor y cocina</li>
+      <li>Baño social</li>
+      <li>Zona de ropas</li>
+      <li>Depósito</li>
+      <li>Terraza y zona de BBQ</li>
+    </ul>
+  </section>
+</main>
+
+<div class="opciones-bloque">
+  <nav class="selector" aria-label="Opción de diseño">
+    <div class="fila">
+      <button type="button" data-op="A" aria-pressed="true"><b>A</b><span>Lineal</span></button>
+      <button type="button" data-op="B" aria-pressed="false"><b>B</b><span>En L</span></button>
+      <button type="button" data-op="C" aria-pressed="false"><b>C</b><span>Compacta</span></button>
+    </div>
+  </nav>
+  <div class="lema"><h3 id="opTitulo"></h3><p id="opTexto"></p></div>
   <div class="portada" id="portada">
     <canvas id="modelo" aria-label="Modelo 3D de la casa. Arrastra hacia los lados para girarla."></canvas>
-    <div class="sin3d" id="sin3d">Este navegador no pudo mostrar el modelo 3D. Más abajo están la planta y las vistas.</div>
+    <div class="sin3d" id="sin3d">Este navegador no pudo mostrar el modelo 3D. Más abajo están las áreas y la planta.</div>
     <div class="pista" id="pista">Arrastra para girar</div>
     <div class="controles">
       <button type="button" id="bCubierta" aria-pressed="false">Quitar cubierta</button>
@@ -137,151 +193,89 @@ footer b{color:#fff}
       <button type="button" id="bTarde" aria-pressed="false">Atardecer</button>
     </div>
   </div>
-  <div class="titulo">
-    <h1>Casa de ejemplo</h1>
-    <p>Una casa de un piso que abre la zona social hacia el deck y la vista, y deja los servicios contra la parte alta del lote. Va en tres opciones para comparar.</p>
-    <ul class="ficha">
-      <li><b>Propuesta 1</b></li>
-      <li>12 de noviembre de 2026</li>
-      <li>Para <b>familia Ejemplo</b></li>
-    </ul>
+  <div class="areas-bloque">
+    <table class="areas" id="areas"></table>
   </div>
-</header>
-
-<nav class="selector" aria-label="Opción de diseño">
-  <div class="fila">
-    <button type="button" data-op="A" aria-pressed="true"><b>A</b><span>Compacta</span></button>
-    <button type="button" data-op="B" aria-pressed="false"><b>B</b><span>Dos alcobas</span></button>
-    <button type="button" data-op="C" aria-pressed="false"><b>C</b><span>En L</span></button>
-  </div>
-  <p class="lema" id="lema"></p>
-</nav>
+</div>
 
 <main>
-  <p class="guia"><b>Guía, opciones.</b> El selector cambia solo lo que varía entre opciones: el 3D, la planta, las vistas y los números. Lo demás se escribe una vez. Marca una opción como recomendada y di por qué; sin eso el cliente se demora en decidir.</p>
-
-  <section id="idea">
-    <h2>Lo que nos pidieron</h2><div class="cota"></div>
-    <p>Una casa para dos personas, fácil de mantener, donde la cocina y la sala sean un solo espacio y se pueda salir al deck desde la alcoba.</p>
-    <p>Las tres opciones parten de la misma nave de 6,00 m de fondo bajo cubierta a dos aguas. Lo social ocupa el lado de la vista; el baño y la cocina se recuestan contra la parte alta del lote.</p>
-    <p class="guia"><b>Guía, la idea.</b> Dos párrafos: qué pidió el cliente y qué tienen en común las opciones. Si pidió algo que no se pudo cumplir, se dice aquí y por qué.</p>
-  </section>
-
-  <section id="lote">
-    <h2>Cómo se sienta en el lote</h2><div class="cota"></div>
-    <p>La casa va en la parte media del lote, con el lado largo hacia la vía y la vista. El sol de la mañana entra a la alcoba y a la sala; la tarde le pega a la pared de servicios, que casi no tiene ventanas.</p>
-    <p>Se levanta 40 cm del terreno sobre pedestales: no se mueve tierra y el agua corre por debajo. El botón "Ver el lote" del modelo muestra linderos, vía y acceso.</p>
-    <p class="guia"><b>Guía, el lote.</b> Hoy el botón muestra un lote dibujado: linderos, vía y acceso. Para verlo sobre la localización real hay dos caminos: poner la foto satelital del lote como piso del modelo, o incrustar el mapa 3D de Google con la casa implantada. El segundo necesita una clave de Google y las coordenadas del lote.</p>
-  </section>
+  <p class="guia"><b>Guía, opciones.</b> El texto de cada opción va arriba del 3D y las áreas debajo. El fondo cambia con la opción (verde claro, arena, gris niebla) y ese mismo color acompaña la planta, las vistas y su columna del comparativo. Las tres casas son de relleno, pero cumplen el programa: se cambian por los modelos de Revit.</p>
 
   <section id="planta">
-    <p class="cambia" data-op-rotulo></p>
-    <h2>La planta</h2><div class="cota"></div>
+    <div class="rot"><div class="barras"><i></i><i></i><i></i></div><h2>La planta<small data-op-rotulo></small></h2></div>
     <div class="plano" id="plano"></div>
-    <ol class="recorrido" id="recorrido"></ol>
-    <p class="guia"><b>Guía, la planta.</b> Amueblada, sin cotas, con el área de cada espacio. Aquí la planta se dibuja sola desde el mismo modelo de relleno; en la real, cada opción trae su planta exportada de Revit como imagen.</p>
+    <p class="vive" id="vive"></p>
+    <p class="guia"><b>Guía, la planta.</b> Los números de la planta son los mismos de la tabla de áreas. En la real, cada opción trae su planta amueblada exportada de Revit, sin cotas.</p>
   </section>
 
   <section id="vistas">
-    <p class="cambia" data-op-rotulo></p>
-    <h2>Cómo se ve</h2><div class="cota"></div>
+    <div class="rot"><div class="barras"><i></i><i></i><i></i></div><h2>Cómo se ve<small data-op-rotulo></small></h2></div>
     <div class="vistas">
       <div class="vista"><strong>La llegada</strong><span id="vista1"></span></div>
       <div class="vista"><strong>La sala</strong><span id="vista2"></span></div>
     </div>
-    <p class="guia"><b>Guía, las vistas.</b> Con tres opciones bajan a dos imágenes por opción, para no triplicar los renders. Cuando el cliente escoja, la opción elegida recibe las cuatro.</p>
-  </section>
-
-  <section id="numeros">
-    <p class="cambia" data-op-rotulo></p>
-    <h2>Los números</h2><div class="cota"></div>
-    <table class="areas" id="areas"></table>
-    <div class="rango">
-      <div>Rango de inversión estimado</div>
-      <div class="cifra" id="rango">Por definir</div>
-      <p>Aquí va un rango por opción, no una cifra cerrada: desde, hasta, qué incluye, si tiene IVA y la fecha de los precios.</p>
-    </div>
-    <p class="guia"><b>Guía, los números.</b> Un rango protege a los dos. Di siempre qué no incluye (lote, licencia, acometidas, muebles). Si no tienes el valor de las tres, pon al menos la diferencia contra la opción A.</p>
+    <p class="guia"><b>Guía, las vistas.</b> Dos imágenes por opción. Cada marco se cambia por un render o una captura de Revit.</p>
   </section>
 
   <section id="comparar">
-    <h2>Las tres, lado a lado</h2><div class="cota"></div>
+    <div class="rot"><div class="barras"><i></i><i></i><i></i></div><h2>Las tres, lado a lado</h2></div>
     <table class="compara" id="compara"></table>
-    <p class="guia"><b>Guía, el comparativo.</b> Seis filas como máximo. Las dos últimas son las que deciden: lo mejor de cada una y lo que sacrifica.</p>
+    <p class="guia"><b>Guía, el comparativo.</b> Las dos últimas filas son las que deciden: lo mejor de cada una y lo que sacrifica. Marca una como recomendada y di por qué.</p>
   </section>
 
-  <section id="decidir">
-    <h2>Lo que necesitamos que decidan</h2><div class="cota"></div>
-    <p>Con estas dos respuestas armamos la propuesta 2. Cada botón abre WhatsApp con el mensaje listo; se puede completar antes de enviar.</p>
-
-    <div class="pregunta">
-      <h3>¿Cuál opción prefieren?</h3>
-      <p>Si les gusta una con algo de otra, usen "Una mezcla" y cuéntennos cuál.</p>
-      <div class="opciones">
-        <a href="https://wa.me/?text=Propuesta%201%3A%20preferimos%20la%20opci%C3%B3n%20A%2C%20compacta.">A, compacta</a>
-        <a href="https://wa.me/?text=Propuesta%201%3A%20preferimos%20la%20opci%C3%B3n%20B%2C%20dos%20alcobas.">B, dos alcobas</a>
-        <a href="https://wa.me/?text=Propuesta%201%3A%20preferimos%20la%20opci%C3%B3n%20C%2C%20en%20L.">C, en L</a>
-        <a class="otra" href="https://wa.me/?text=Propuesta%201%3A%20nos%20gusta%20una%20mezcla%3A%20">Una mezcla</a>
-      </div>
-    </div>
-    <div class="pregunta">
-      <h3>¿La cocina abierta a la sala o separada con una barra alta?</h3>
-      <p>Aplica a las tres opciones. Abierta se siente más grande; con barra alta se esconde el desorden.</p>
-      <div class="opciones">
-        <a href="https://wa.me/?text=Propuesta%201%2C%20cocina%3A%20la%20queremos%20abierta%20a%20la%20sala.">Abierta</a>
-        <a href="https://wa.me/?text=Propuesta%201%2C%20cocina%3A%20la%20queremos%20con%20barra%20alta.">Con barra alta</a>
-        <a class="otra" href="https://wa.me/?text=Propuesta%201%2C%20cocina%3A%20">Otra idea</a>
-      </div>
-    </div>
-    <p class="guia"><b>Guía, las decisiones.</b> La primera pregunta siempre es cuál opción. Las demás solo si aplican a todas; lo particular de cada opción se deja para la propuesta 2. Para que el mensaje te llegue directo, cambia <b>wa.me/?text=</b> por <b>wa.me/57 y tu número?text=</b> en cada botón.</p>
+  <section id="lote">
+    <div class="rot"><div class="barras"><i></i><i></i><i></i></div><h2>El lote</h2></div>
+    <p>La casa va en la parte media del lote, con el lado largo hacia la vía y la vista. Se levanta 40 cm del terreno sobre pedestales: no se mueve tierra y el agua corre por debajo. El botón "Ver el lote" del modelo muestra linderos, vía y acceso.</p>
+    <p class="guia"><b>Guía, el lote.</b> Hoy el botón muestra un lote dibujado. Para la localización real: foto satelital del lote como piso del modelo, o el mapa 3D de Google con la casa implantada (necesita clave de Google y coordenadas).</p>
   </section>
 
   <section id="sigue">
-    <h2>Lo que sigue</h2><div class="cota"></div>
+    <div class="rot"><div class="barras"><i></i><i></i><i></i></div><h2>Lo que sigue</h2></div>
     <ul class="sigue">
-      <li><b>Esta semana</b> Reciben esta propuesta, escogen opción y responden la pregunta.</li>
+      <li><b>Esta semana</b> Revisan las tres opciones y nos cuentan cuál prefieren y qué cambiarían.</li>
       <li><b>En 8 días</b> Propuesta 2: la opción elegida con ajustes y presupuesto por capítulos.</li>
       <li><b>Al aprobar</b> Planos de construcción, licencia y cronograma de obra.</li>
     </ul>
-    <p class="guia"><b>Guía, lo que sigue.</b> Tres pasos con plazo. Cuando el proyecto arranque, esta misma página crece a portal de obra: avance, fotos, documentos y cuentas.</p>
   </section>
 </main>
 
 <footer>
-  <p><b>Propuesta 1</b>, 12 de noviembre de 2026. Diseño preliminar sujeto a ajustes, sin validez para construcción. Arq. Andrés Ríos.</p>
+  <div class="dentro">
+    <img src="taukar-espacios.png" alt="TAUKAR Espacios">
+    <address>proyectos@arqteka.com<br>Cra 13 N. 93 – 53<br>Cel 3159762675</address>
+    <p>Propuesta 1, 13 de noviembre de 2026. Diseño preliminar sujeto a ajustes, sin validez para construcción.</p>
+  </div>
 </footer>
 
 <script>
-/* ====== Datos de cada opción (lo único que cambia al tocar A, B o C) ====== */
+/* ====== Datos de cada opción ======
+   esp: [nombre, área, x, z] — x, z ubican el número en la planta (metros). */
 var OPC={
-  A:{nombre:'Compacta',lema:'Una alcoba, 54 m² cubiertos. Es la base y la de menor costo.',rec:true,
-     areas:[['Sala, comedor y cocina','32,4'],['Alcoba','13,0'],['Baño','8,6']],cubierta:'54,0',deck:'21,6',alcobas:'1',rango:'Por definir',
-     mejor:'Menor costo, fácil de mantener',sacrifica:'Sin cuarto para visitas',
-     vista:['Desde el acceso, deck corrido al frente','Mirando a la vista, puerta abierta'],
-     recorrido:['Se llega por el deck, que es también el corredor y el sitio de estar afuera.','La puerta vidriera abre a la sala, con la chimenea en la esquina.','La cocina queda al fondo, con barra hacia la sala para cocinar acompañado.','La alcoba tiene su propia salida al deck y el baño queda detrás, sin pasar por lo social.'],
-     rot:[[4.2,3.05,'Sala, comedor y cocina','32,4 m²'],[0.3,5.3,'Alcoba','13,0 m²'],[1.35,1.45,'Baño','8,6 m²'],[0.3,7.3,'Deck','21,6 m²']],
-     marca:[[6.3,7.9],[6.3,5.3],[5.7,1.3],[3.0,5.3]]},
-  B:{nombre:'Dos alcobas',lema:'Crece 3,00 m a lo largo: segunda alcoba y estudio. 72 m² cubiertos.',
-     areas:[['Sala, comedor y cocina','32,4'],['Alcoba principal','13,0'],['Baño','8,6'],['Alcoba 2','10,8'],['Estudio','7,2']],cubierta:'72,0',deck:'28,8',alcobas:'2',rango:'Por definir',
-     mejor:'Recibe visitas; lo social queda al centro',sacrifica:'La sala pierde la ventana lateral',
-     vista:['Desde el acceso, casa de 12,00 m de frente','Mirando a la vista, alcobas a los lados'],
-     recorrido:['Se llega por el deck, ahora de 12,00 m de largo.','La puerta vidriera abre a la sala, que queda en el centro de la casa.','La cocina sigue al fondo, con la barra hacia la sala.','Las dos alcobas quedan en los extremos, separadas por lo social: cada una con su salida al deck.'],
-     rot:[[4.2,3.05,'Sala, comedor y cocina','32,4 m²'],[0.3,5.3,'Alcoba','13,0 m²'],[1.35,1.45,'Baño','8,6 m²'],[9.3,5.35,'Alcoba 2','10,8 m²'],[9.3,1.6,'Estudio','7,2 m²'],[0.3,7.3,'Deck','28,8 m²']],
-     marca:[[6.3,7.9],[6.3,5.3],[5.7,1.3],[10.9,3.2]]},
-  C:{nombre:'En L',lema:'La alcoba sale en un ala hacia la vista y deja un estudio. 67 m² cubiertos.',
-     areas:[['Sala, comedor y cocina','32,4'],['Alcoba (ala)','13,0'],['Baño','8,6'],['Estudio','13,0']],cubierta:'67,0',deck:'13,0',alcobas:'1 + estudio',rango:'Por definir',
-     mejor:'Deck recogido y protegido del viento',sacrifica:'Deck más pequeño; cubierta más compleja',
-     vista:['Desde el acceso, con el ala al costado','Mirando al deck, cerrado por el ala'],
-     recorrido:['Se llega por el deck, que queda abrazado entre la sala y el ala de la alcoba.','La puerta vidriera abre a la sala, con la chimenea en la esquina.','La cocina queda al fondo, con barra hacia la sala.','Por el estudio se pasa al ala de la alcoba, que mira de frente a la vista.'],
-     rot:[[4.2,3.05,'Sala, comedor y cocina','32,4 m²'],[0.3,3.9,'Estudio','13,0 m²'],[1.35,1.45,'Baño','8,6 m²'],[0.3,6.7,'Alcoba','13,0 m²'],[4.0,7.3,'Deck','13,0 m²']],
-     marca:[[6.3,7.9],[6.3,5.3],[5.7,1.3],[3.05,6.75]]}
+  A:{nombre:'Lineal',rec:true,
+     texto:'Todo en una sola nave de 15,00 m de frente. La alcoba principal y la auxiliar quedan en los extremos, separadas por la zona social, y la terraza corre al frente con el BBQ en la punta.',
+     esp:[['Alcoba principal','15,1',2.1,5.25],['Baño principal','5,8',1.65,1.7],['Vestier','4,3',3.3,1.6],['Alcoba auxiliar','17,3',12.6,5.2],['Sala, comedor y cocina','36,0',7.2,3.05],['Baño social','4,3',11.3,1.85],['Zona de ropas','3,6',12.75,0.95],['Depósito','3,6',13.95,1.55]],
+     cubierta:'90,0',terraza:['Terraza y zona de BBQ','29,2',8.7,7.6],frente:'15,00',
+     mejor:'Las dos alcobas y lo social miran a la vista',sacrifica:'Pide 15 m de frente libre',
+     vive:'Se llega por la terraza y se entra directo a la sala. La alcoba principal queda a la izquierda, con su baño y vestier atrás; la auxiliar a la derecha, junto al baño social. Ropas y depósito abren hacia atrás.',
+     vista:['Desde el acceso, la casa de 15 m con la terraza al frente','Mirando a la vista, puerta vidriera abierta']},
+  B:{nombre:'En L',
+     texto:'La alcoba principal sale en un ala hacia el frente, con su baño y vestier, y la terraza queda recogida en la esquina, protegida del viento. El frente baja a 10,80 m.',
+     esp:[['Alcoba principal','15,1',7.4,11.2],['Baño principal','5,8',9.9,7.65],['Vestier','4,3',7.75,7.35],['Alcoba auxiliar','17,3',2.4,5.25],['Sala, comedor y cocina','36,0',7.8,3.05],['Baño social','4,3',4.05,1.85],['Zona de ropas','3,6',2.25,0.95],['Depósito','3,6',0.95,1.55]],
+     cubierta:'90,0',terraza:['Terraza y zona de BBQ','19,8',5.5,8.25],frente:'10,80',
+     mejor:'Terraza protegida; alcoba principal aparte',sacrifica:'Cubierta más compleja; terraza menor',
+     vive:'La terraza queda abrazada entre la sala y el ala de la alcoba principal. Desde la sala se pasa al vestier, que reparte al baño y a la alcoba. La auxiliar queda al otro lado, con salida propia a la terraza.',
+     vista:['Desde el acceso, con el ala de la alcoba al costado','Mirando a la terraza, cerrada por el ala']},
+  C:{nombre:'Compacta',
+     texto:'Dos crujías bajo una sola cubierta: la alcoba principal, el vestier, el baño y los servicios atrás; lo social y la alcoba auxiliar al frente. Menos fachada y recorridos más cortos.',
+     esp:[['Alcoba principal','15,1',3.45,2.95],['Baño principal','8,6',7.55,2.7],['Vestier','6,5',5.1,2.8],['Alcoba auxiliar','17,3',1.5,7.1],['Sala, comedor y cocina','30,2',9.7,5.6],['Baño social','4,3',4.5,7.35],['Zona de ropas','4,3',9.2,2.8],['Depósito','4,3',9.6,1.25]],
+     cubierta:'90,7',terraza:['Terraza y zona de BBQ','19,4',9.9,9.8],frente:'10,80',
+     mejor:'Menos fachada y cubierta: la más económica',sacrifica:'La alcoba principal queda atrás, sin vista directa',
+     vive:'Se entra por la terraza a la sala. Un pequeño vestíbulo reparte a la alcoba auxiliar, al baño social y al vestier, que lleva a la alcoba principal y a su baño. Ropas y depósito quedan junto a la cocina.',
+     vista:['Desde el acceso, un volumen compacto a dos aguas','Mirando a la terraza desde el comedor']}
 };
 var actual='A', PLANO={}, alCambiar=[];
 
-(function(){
-  var b=document.getElementById('verGuia');
-  b.addEventListener('click',function(){document.body.classList.add('sin-guia');});
-})();
+document.getElementById('verGuia').addEventListener('click',function(){document.body.classList.add('sin-guia');});
 
 /* ====== Modelo 3D de relleno, dibujado con WebGL sin librerías ======
    Se reemplaza por el modelo exportado de Revit (.glb) cuando exista. */
@@ -296,7 +290,7 @@ var actual='A', PLANO={}, alCambiar=[];
   function norm(a){var l=Math.sqrt(dot(a,a))||1;return [a[0]/l,a[1]/l,a[2]/l];}
 
   var P=0.4, H=2.8, T=0.12;                 // piso, alto de muro, espesor
-  var MADERA='#C8A678', BLANCO='#EFEBE2', PISO='#D9C6A5', TECA='#A9692F', TEJA='#2C3E3A', MUEBLE='#8E9C9D', CLARO='#F7F7F3', AZUL='#6F8F95';
+  var MADERA='#C9AD82', BLANCO='#F1EEE4', PISO='#DCCBA9', TECA='#A9743E', TEJA='#595959', MUEBLE='#ABAC8A', CLARO='#F7F7F2', TELA='#8C9470', OSCURO='#3A3A3A';
 
   function construir(op){
     var G={base:{p:[],n:[],c:[]},cub:{p:[],n:[],c:[]}};
@@ -311,7 +305,7 @@ var actual='A', PLANO={}, alCambiar=[];
       quad(g,[x0,y0,z0],[x0,y0,z1],[x0,y1,z1],[x0,y1,z0],[-1,0,0],c);
       quad(g,[x0,y1,z1],[x1,y1,z1],[x1,y1,z0],[x0,y1,z0],[0,1,0],c);
       quad(g,[x0,y0,z0],[x1,y0,z0],[x1,y0,z1],[x0,y0,z1],[0,-1,0],c);}
-    // muro a lo largo de X en z=zc; huecos: [desde, hasta, antepecho, dintel, 1 si es solo paso]
+    // muro a lo largo de X en z=zc; huecos: [desde, hasta, antepecho, dintel, 1 si es puerta o paso]
     function muroX(zc,x0,x1,col,huecos,ext){var x=x0;(huecos||[]).forEach(function(h){
         if(h[0]>x){box('base',x,P,zc,h[0],H,zc+T,col);PL.muros.push([x,zc,h[0],zc+T]);}
         if(h[2]>0)box('base',h[0],P,zc,h[1],P+h[2],zc+T,col);
@@ -327,86 +321,106 @@ var actual='A', PLANO={}, alCambiar=[];
         z=h[1];});
       if(z<z1){box('base',xc,P,z,xc+T,H,z1,col);PL.muros.push([xc,z,xc+T,z1]);}}
     function mueble(x0,z0,x1,z1,alto,col,osc){box('base',x0,P,z0,x1,P+alto,z1,col);PL.muebles.push([x0,z0,x1,z1,osc?1:0]);}
-    function cama(x0,z0){mueble(x0,z0,x0+1.6,z0+2.0,0.45,CLARO);box('base',x0,P,z0-0.05,x0+1.6,P+0.95,z0+0.05,MUEBLE);
-      box('base',x0+0.1,P+0.45,z0+0.1,x0+0.75,P+0.55,z0+0.5,'#DADFDC');box('base',x0+0.85,P+0.45,z0+0.1,x0+1.5,P+0.55,z0+0.5,'#DADFDC');
-      PL.muebles.push([x0+0.1,z0+0.1,x0+0.75,z0+0.5,0]);PL.muebles.push([x0+0.85,z0+0.1,x0+1.5,z0+0.5,0]);}
+    function almohada(x0,z0){box('base',x0,P+0.45,z0,x0+0.65,P+0.55,z0+0.4,'#E4E7DA');PL.muebles.push([x0,z0,x0+0.65,z0+0.4,0]);}
+    function cama(x0,z0){mueble(x0,z0,x0+1.6,z0+2.0,0.45,CLARO);box('base',x0,P,z0-0.05,x0+1.6,P+0.95,z0+0.05,MUEBLE);almohada(x0+0.1,z0+0.1);almohada(x0+0.85,z0+0.1);}
+    function camaS(x0,z0){mueble(x0,z0,x0+0.9,z0+1.9,0.45,CLARO);box('base',x0,P,z0-0.05,x0+0.9,P+0.9,z0+0.05,MUEBLE);almohada(x0+0.12,z0+0.1);}
+    function bano(x0,z0,x1,z1){mueble(x0+0.12,z0+0.12,x0+1.02,z0+1.02,0.06,'#CBD3CF');mueble(x1-0.7,z0+0.15,x1-0.2,z0+0.65,0.4,CLARO);mueble(x0+0.2,z1-0.55,x0+1.1,z1-0.15,0.85,MUEBLE);}
+    function social(sx,sz,w,d,cw){
+      mueble(sx+0.3,sz+0.15,sx+cw,sz+0.75,0.9,MUEBLE); box('base',sx+0.3,P+0.9,sz+0.15,sx+cw,P+0.94,sz+0.75,CLARO);
+      var iz=d<5.5?1.5:1.8; mueble(sx+0.7,sz+iz,sx+2.9,sz+iz+0.65,0.9,MUEBLE); box('base',sx+0.65,P+0.9,sz+iz-0.05,sx+2.95,P+0.94,sz+iz+0.7,TECA);
+      var mz=sz+d-2.4; box('base',sx+0.6,P+0.7,mz,sx+2.0,P+0.75,mz+0.9,TECA); PL.muebles.push([sx+0.6,mz,sx+2.0,mz+0.9,0]);
+      [[sx+0.65,mz+0.05],[sx+1.9,mz+0.05],[sx+0.65,mz+0.8],[sx+1.9,mz+0.8]].forEach(function(q){box('base',q[0],P,q[1],q[0]+0.06,P+0.7,q[1]+0.06,'#6B5237');});
+      mueble(sx+2.6,mz,sx+4.8,mz+0.9,0.42,TELA); mueble(sx+4.3,mz+0.9,sx+4.8,mz+1.7,0.42,TELA); box('base',sx+2.6,P+0.42,mz,sx+4.8,P+0.8,mz+0.18,'#7A8260');
+      mueble(sx+w-0.75,sz+d-0.9,sx+w-0.2,sz+d-0.25,1.0,OSCURO,true);
+      return [sx+w-0.55,sz+d-0.7];}
     function piso(x0,z0,x1,z1,col,tipo){box('base',x0,P-0.15,z0,x1,P,z1,col);PL.pisos.push([x0,z0,x1,z1,tipo]);
-      for(var x=x0+0.3;x<x1;x+=2.7)for(var z=z0+0.3;z<z1;z+=2.5)box('base',x-0.15,0,z-0.15,x+0.15,P-0.15,z+0.15,'#B9B9B2');}
-    function arbol(x,z,s){box('base',x-0.12,0,z-0.12,x+0.12,1.6*s,z+0.12,'#6B5240');box('base',x-0.9*s,1.4*s,z-0.9*s,x+0.9*s,3.4*s,z+0.9*s,'#4E6B57');box('base',x-0.55*s,3.4*s,z-0.55*s,x+0.55*s,4.3*s,z+0.55*s,'#5A7A63');}
-    // cubierta a dos aguas con cumbrera a lo largo de X
+      for(var x=x0+0.3;x<x1;x+=2.7)for(var z=z0+0.3;z<z1;z+=2.5)box('base',x-0.15,0,z-0.15,x+0.15,P-0.15,z+0.15,'#BDBDB4');}
+    function gradas(x0,z){box('base',x0,0.12,z,x0+1.8,0.26,z+0.35,TECA);box('base',x0,0,z+0.35,x0+1.8,0.13,z+0.7,TECA);}
+    function bbq(x0,z0){mueble(x0,z0,x0+1.8,z0+0.55,0.9,MUEBLE);box('base',x0+0.2,P+0.9,z0+0.05,x0+0.9,P+1.0,z0+0.5,OSCURO);PL.muebles.push([x0+0.2,z0+0.05,x0+0.9,z0+0.5,1]);}
+    function mesaExt(x0,z0){box('base',x0,P+0.7,z0,x0+1.6,P+0.75,z0+0.9,TECA);PL.muebles.push([x0,z0,x0+1.6,z0+0.9,0]);
+      [[x0+0.05,z0+0.05],[x0+1.5,z0+0.05],[x0+0.05,z0+0.8],[x0+1.5,z0+0.8]].forEach(function(q){box('base',q[0],P,q[1],q[0]+0.06,P+0.7,q[1]+0.06,'#6B5237');});}
+    function arbol(x,z,s){box('base',x-0.12,0,z-0.12,x+0.12,1.6*s,z+0.12,'#6B5A44');box('base',x-0.9*s,1.4*s,z-0.9*s,x+0.9*s,3.4*s,z+0.9*s,'#8E9468');box('base',x-0.55*s,3.4*s,z-0.55*s,x+0.55*s,4.3*s,z+0.55*s,'#9BA174');}
     function aguasX(x0,x1,z0,z1){var c=hex(TEJA),m=hex(MADERA),zm=(z0+z1)/2,yc=H+(z1-z0)/4,e=0.5,v=0.4,th=0.12,ye=H-e*0.5;
       [[z0-e,[0,0.89,-0.45]],[z1+e,[0,0.89,0.45]]].forEach(function(s){var z=s[0],hint=s[1];
         var a=[x0-v,ye,z],b=[x1+v,ye,z],cc=[x1+v,yc,zm],d=[x0-v,yc,zm];
         var a2=[a[0],a[1]+th,a[2]],b2=[b[0],b[1]+th,b[2]],c2=[cc[0],cc[1]+th,cc[2]],d2=[d[0],d[1]+th,d[2]];
-        quadA('cub',a2,b2,c2,d2,hint,c);quadA('cub',a,b,cc,d,[-hint[0],-hint[1],-hint[2]],hex('#B89B74'));
+        quadA('cub',a2,b2,c2,d2,hint,c);quadA('cub',a,b,cc,d,[-hint[0],-hint[1],-hint[2]],hex('#BFA47C'));
         quadA('cub',a,b,b2,a2,[0,0,hint[2]],c);quadA('cub',a,d,d2,a2,[-1,0,0],c);quadA('cub',b,cc,c2,b2,[1,0,0],c);});
-      [[x0,-1],[x0+T,1],[x1,1],[x1-T,-1]].forEach(function(q){tri('cub',[q[0],H,z0],[q[0],H,z1],[q[0],yc,zm],[q[1],0,0],m);});}
-    // cubierta a dos aguas con cumbrera a lo largo de Z (para el ala); zi es donde se mete bajo la cubierta principal
+      [[x0,-1],[x0+T,1],[x1,1],[x1-T,-1]].forEach(function(q){tri('cub',[q[0],H,z0],[q[0],H,z1],[q[0],yc,zm],[q[1],0,0],m);});
+      return yc;}
     function aguasZ(x0,x1,zi,z1){var c=hex(TEJA),m=hex(MADERA),xm=(x0+x1)/2,yc=H+(x1-x0)/4,e=0.5,v=0.4,th=0.12,ye=H-e*0.5;
       [[x0-e,[-0.45,0.89,0]],[x1+e,[0.45,0.89,0]]].forEach(function(s){var x=s[0],hint=s[1];
         var a=[x,ye,zi],b=[x,ye,z1+v],cc=[xm,yc,z1+v],d=[xm,yc,zi];
         var a2=[a[0],a[1]+th,a[2]],b2=[b[0],b[1]+th,b[2]],c2=[cc[0],cc[1]+th,cc[2]],d2=[d[0],d[1]+th,d[2]];
-        quadA('cub',a2,b2,c2,d2,hint,c);quadA('cub',a,b,cc,d,[-hint[0],-hint[1],-hint[2]],hex('#B89B74'));
+        quadA('cub',a2,b2,c2,d2,hint,c);quadA('cub',a,b,cc,d,[-hint[0],-hint[1],-hint[2]],hex('#BFA47C'));
         quadA('cub',a,b,b2,a2,[hint[0],0,0],c);quadA('cub',b,cc,c2,b2,[0,0,1],c);});
       [[z1,1],[z1-T,-1]].forEach(function(q){tri('cub',[x0,H,q[0]],[x1,H,q[0]],[xm,yc,q[0]],[0,0,q[1]],m);});}
 
-    var L=(op==='B')?12:9;
+    var L=(op==='A')?15:10.8, F=(op==='A')?8.7:(op==='B'?12:11.1), ch, yc, PU=2.05;
     // terreno, lote, vía y árboles
-    box('base',-45,-0.3,-40,55,0,50,'#93A48C');
-    var lx0=-9,lx1=L+11,lz0=-13,lz1=21;
-    [[lx0,lz0,lx1,lz0+0.14],[lx0,lz1-0.14,lx1,lz1],[lx0,lz0,lx0+0.14,lz1],[lx1-0.14,lz0,lx1,lz1]].forEach(function(q){box('base',q[0],0,q[1],q[2],0.1,q[3],'#F4F1E6');});
-    [[lx0,lz0],[lx1,lz0],[lx0,lz1],[lx1,lz1]].forEach(function(q){box('base',q[0]-0.2,0,q[1]-0.2,q[0]+0.2,0.7,q[1]+0.2,'#F4F1E6');});
-    box('base',-45,0,lz1+0.8,55,0.04,lz1+5.3,'#7C8480');                 // vía
-    box('base',L/2-1.3,0,9.1,L/2+1.3,0.03,lz1+0.8,'#B9B2A2');            // acceso
-    [[-3.5,1.0,1.0],[-5.5,7.5,1.25],[L+4,-2.5,1.1],[L+6.5,6.0,0.9],[5.0,-5.5,1.2],[-6,-9,1.3],[L+7,-9.5,1.15],[L+9,17,0.9],[-5,16,1.1],[1,-10,0.95]].forEach(function(a){arbol(a[0],a[1],a[2]);});
-
-    // cuerpo principal
-    piso(0,0,L,6,PISO,'casa');
-    var atras=[[1.2,2.4,1.5,2.0],[5.5,7.5,1.0,2.1]], frente=[[5.0,7.6,0,2.1]];
-    if(op==='B'){atras.push([9.8,11.2,1.0,2.1]);frente.push([9.7,11.3,0,2.1]);}
-    if(op==='C')frente.unshift([1.4,2.3,0,2.05,1]); else frente.unshift([1.0,2.6,0,2.1]);
-    muroX(0,0,L,MADERA,atras,true);
-    muroX(6-T,0,L,MADERA,frente,true);
-    muroZ(0,0,6,MADERA,[[3.4,4.8,0.9,2.1]],true);
-    muroZ(L-T,0,6,MADERA,op==='B'?[[3.4,4.8,0.9,2.1]]:[[1.5,4.5,0.5,2.1]],true);
-    muroZ(3.6,T,6-T,BLANCO,[[1.0,1.7,0,2.05],[4.0,4.8,0,2.05]]);
-    muroX(2.4,T,3.6,BLANCO,[]);
-    // baño, cocina, comedor, sala, chimenea
-    mueble(0.15,0.15,1.15,1.15,0.06,'#C9D3D5'); mueble(2.2,0.15,2.8,0.6,0.4,CLARO); mueble(1.6,2.0,2.7,2.38,0.85,MUEBLE);
-    mueble(4.2,0.15,8.6,0.75,0.9,MUEBLE); box('base',4.2,P+0.9,0.15,8.6,P+0.94,0.75,CLARO);
-    mueble(4.6,1.8,6.8,2.5,0.9,MUEBLE); box('base',4.55,P+0.9,1.75,6.85,P+0.94,2.55,TECA);
-    box('base',4.4,P+0.7,3.6,5.8,P+0.75,4.5,TECA); PL.muebles.push([4.4,3.6,5.8,4.5,0]);
-    [[4.45,3.65],[5.7,3.65],[4.45,4.4],[5.7,4.4]].forEach(function(q){box('base',q[0],P,q[1],q[0]+0.06,P+0.7,q[1]+0.06,'#5E4630');});
-    mueble(6.2,3.6,8.4,4.5,0.42,AZUL); mueble(7.9,4.5,8.4,5.3,0.42,AZUL); box('base',6.2,P+0.42,3.6,8.4,P+0.8,3.78,'#5F7C82');
-    mueble(8.25,5.1,8.8,5.75,1.0,'#2A2E31',true); box('cub',8.45,P+1.0,5.3,8.62,4.7,5.47,'#2A2E31');
+    box('base',-50,-0.3,-45,60,0,58,'#C7CDB0');
+    var lx0=-9,lx1=L+11,lz0=-13,lz1=F+13;
+    [[lx0,lz0,lx1,lz0+0.14],[lx0,lz1-0.14,lx1,lz1],[lx0,lz0,lx0+0.14,lz1],[lx1-0.14,lz0,lx1,lz1]].forEach(function(q){box('base',q[0],0,q[1],q[2],0.1,q[3],'#FFFFFF');});
+    [[lx0,lz0],[lx1,lz0],[lx0,lz1],[lx1,lz1]].forEach(function(q){box('base',q[0]-0.2,0,q[1]-0.2,q[0]+0.2,0.7,q[1]+0.2,'#FFFFFF');});
+    box('base',-50,0,lz1+0.8,60,0.04,lz1+5.3,'#8D8D86');
+    [[-3.5,1.0,1.0],[-5.5,7.5,1.25],[L+4,-2.5,1.1],[L+6.5,6.0,0.9],[5.0,-5.5,1.2],[-6,-9,1.3],[L+7,-9.5,1.15],[L+9,F+9,0.9],[-5,F+8,1.1],[1,-10,0.95]].forEach(function(a){arbol(a[0],a[1],a[2]);});
 
     if(op==='A'){
-      cama(1.0,2.6);
-      piso(0,6,9,8.4,TECA,'deck');
-      box('base',3.6,0.12,8.4,5.4,0.26,8.75,TECA); box('base',3.6,0,8.75,5.4,0.13,9.1,TECA);
-      aguasX(0,9,0,6);
+      piso(0,0,15,6,PISO,'casa');
+      muroX(0,0,15,MADERA,[[0.7,1.7,1.5,2.0],[5.6,8.4,1.0,2.1],[10.7,11.5,1.5,2.0],[12.35,13.15,0,PU,1],[13.85,14.65,0,PU,1]],true);
+      muroX(6-T,0,15,MADERA,[[1.0,3.2,0,2.1],[5.6,8.8,0,2.1],[11.6,13.6,0,2.1]],true);
+      muroZ(0,0,6,MADERA,[[3.4,4.8,0.9,2.1]],true);
+      muroZ(15-T,0,6,MADERA,[[3.4,4.8,0.9,2.1]],true);
+      muroZ(4.2,T,6-T,BLANCO,[[4.2,5.0,0,PU]]); muroX(2.4,T,4.2,BLANCO,[[2.9,3.7,0,PU]]); muroZ(2.4,T,2.4,BLANCO,[[0.9,1.6,0,PU]]);
+      muroZ(10.2,T,6-T,BLANCO,[[0.9,1.6,0,PU],[4.0,4.8,0,PU]]); muroX(2.4,10.2+T,15-T,BLANCO,[]); muroZ(12.0,T,2.4,BLANCO,[]); muroZ(13.5,T,2.4,BLANCO,[]);
+      cama(1.3,2.6); bano(T,T,2.4,2.4); mueble(2.6,0.15,4.1,0.7,1.9,MUEBLE);
+      ch=social(4.2,0,6,6,4.7);
+      camaS(11.0,2.6); camaS(12.6,2.6); mueble(13.9,2.55,14.85,3.15,1.9,MUEBLE);
+      bano(10.2+T,T,12.0,2.4); mueble(12.2,1.65,12.8,2.25,0.85,CLARO); mueble(12.85,1.65,13.4,2.25,0.85,CLARO); mueble(14.35,0.9,14.8,2.25,1.8,MUEBLE);
+      piso(4.2,6,15,8.7,TECA,'deck'); bbq(12.9,8.0); mesaExt(10.6,6.9); gradas(6.3,8.7);
+      box('base',6.0,0,9.4,8.4,0.03,lz1+0.8,'#DAD6C6');
+      yc=aguasX(0,15,0,6);
     }
     if(op==='B'){
-      cama(1.0,2.6);
-      muroZ(9,T,6-T,BLANCO,[[0.9,1.6,0,2.05],[2.9,3.7,0,2.05]]);
-      muroX(2.4,9+T,12-T,BLANCO,[]);
-      cama(9.9,2.6); mueble(9.3,0.25,10.9,0.85,0.75,TECA); mueble(11.1,0.9,11.7,2.2,1.8,MUEBLE);
-      piso(0,6,12,8.4,TECA,'deck');
-      box('base',5.1,0.12,8.4,6.9,0.26,8.75,TECA); box('base',5.1,0,8.75,6.9,0.13,9.1,TECA);
-      aguasX(0,12,0,6);
+      piso(0,0,10.8,6,PISO,'casa'); piso(6.6,6,10.8,12,PISO,'casa');
+      muroX(0,0,10.8,MADERA,[[0.35,1.15,0,PU,1],[1.85,2.65,0,PU,1],[3.5,4.3,1.5,2.0],[6.2,9.0,1.0,2.1]],true);
+      muroX(6-T,0,10.8,MADERA,[[1.2,3.2,0,2.1],[4.95,6.45,0,2.1],[7.3,8.2,0,PU,1]],true);
+      muroZ(0,0,6,MADERA,[[3.4,4.8,0.9,2.1]],true);
+      muroZ(10.8-T,0,6,MADERA,[[1.5,4.5,0.5,2.1]],true);
+      muroZ(4.8,T,6-T,BLANCO,[[0.9,1.6,0,PU],[4.0,4.8,0,PU]]); muroX(2.4,T,4.8,BLANCO,[]); muroZ(1.5,T,2.4,BLANCO,[]); muroZ(3.0,T,2.4,BLANCO,[]);
+      muroZ(6.6,6,12,MADERA,[[9.2,10.8,0,2.1]],true);
+      muroZ(10.8-T,6,12,MADERA,[[6.8,7.6,1.5,2.0],[9.4,10.8,0.9,2.1]],true);
+      muroX(12-T,6.6,10.8,MADERA,[[7.5,9.9,0.9,2.1]],true);
+      muroX(8.4,6.6+T,10.8-T,BLANCO,[[7.3,8.1,0,PU]]); muroZ(8.4,6,8.4,BLANCO,[[6.8,7.5,0,PU]]);
+      mueble(0.15,0.9,0.55,2.3,1.8,MUEBLE); mueble(1.7,1.65,2.3,2.25,0.85,CLARO); mueble(2.35,1.65,2.9,2.25,0.85,CLARO);
+      bano(3.0+T,T,4.8,2.4); camaS(0.5,2.6); camaS(2.1,2.6); mueble(3.7,2.55,4.7,3.15,1.9,MUEBLE);
+      ch=social(4.8,0,6,6,4.7);
+      mueble(6.74,6.3,7.1,8.25,1.9,MUEBLE); bano(8.4+T,6.0,10.8-T,8.4); cama(8.7,8.62);
+      piso(0,6,6.6,9,TECA,'deck'); bbq(0.3,8.3); mesaExt(2.9,6.9); gradas(2.6,9);
+      box('base',2.3,0,9.7,4.7,0.03,lz1+0.8,'#DAD6C6');
+      yc=aguasX(0,10.8,0,6); aguasZ(6.6,10.8,4.2,12);
     }
     if(op==='C'){
-      mueble(0.3,2.7,1.9,3.3,0.75,TECA); mueble(0.4,4.9,2.4,5.7,0.42,AZUL);
-      piso(0,6,3.6,9.6,PISO,'casa');
-      muroZ(0,6,9.6,MADERA,[[7.2,8.6,0.9,2.1]],true);
-      muroZ(3.6-T,6,9.6,MADERA,[[7.0,8.6,0,2.1]],true);
-      muroX(9.6-T,0,3.6,MADERA,[[0.9,2.7,0.9,2.1]],true);
-      cama(1.0,7.2);
-      piso(3.6,6,9,8.4,TECA,'deck');
-      box('base',5.4,0.12,8.4,7.2,0.26,8.75,TECA); box('base',5.4,0,8.75,7.2,0.13,9.1,TECA);
-      aguasX(0,9,0,6); aguasZ(0,3.6,4.2,9.6);
+      piso(0,0,10.8,8.4,PISO,'casa');
+      muroX(0,0,10.8,MADERA,[[1.2,3.0,0.9,2.1],[6.8,7.6,1.5,2.0]],true);
+      muroX(8.4-T,0,10.8,MADERA,[[0.9,2.7,0.9,2.1],[4.1,4.9,1.5,2.0],[6.2,9.4,0,2.1]],true);
+      muroZ(0,0,8.4,MADERA,[[1.2,2.6,0.9,2.1],[5.3,6.7,0.9,2.1]],true);
+      muroZ(10.8-T,0,8.4,MADERA,[[0.5,1.3,1.5,2.0],[2.2,3.2,1.2,2.0],[4.6,7.4,0.5,2.1]],true);
+      muroX(3.6,T,10.8-T,BLANCO,[[4.4,5.2,0,PU],[9.0,9.8,0,PU]]);
+      muroZ(4.2,T,3.6,BLANCO,[[1.4,2.2,0,PU]]); muroZ(6.0,T,3.6,BLANCO,[[1.4,2.2,0,PU]]); muroZ(8.4,T,3.6,BLANCO,[]);
+      muroX(1.8,8.4+T,10.8-T,BLANCO,[[9.2,10.0,0,PU]]);
+      muroZ(3.6,3.6+T,8.4-T,BLANCO,[[4.4,5.2,0,PU]]); muroX(6.0,3.6+T,5.4,BLANCO,[[4.1,4.8,0,PU]]); muroZ(5.4,6.0,8.4-T,BLANCO,[]);
+      cama(1.3,0.3); mueble(4.35,0.2,5.85,0.75,1.9,MUEBLE); bano(6.0+T,T,8.4,3.6);
+      mueble(8.6,0.2,10.6,0.6,1.8,MUEBLE); mueble(10.0,2.0,10.6,2.6,0.85,CLARO); mueble(10.0,2.65,10.6,3.25,0.85,CLARO);
+      camaS(0.4,3.85); camaS(2.0,3.85); mueble(2.95,5.6,3.5,8.2,1.9,MUEBLE);
+      bano(3.6+T,6.0+T,5.4,8.4-T);
+      ch=social(5.4,3.6,5.4,4.8,3.3);
+      piso(3.6,8.4,10.8,11.1,TECA,'deck'); bbq(3.9,10.4); mesaExt(6.9,9.3); gradas(6.9,11.1);
+      box('base',6.6,0,11.8,9.0,0.03,lz1+0.8,'#DAD6C6');
+      yc=aguasX(0,10.8,0,8.4);
     }
-    return {G:G,PL:PL,L:L,fondo:(op==='C')?9.6:8.4};
+    box('cub',ch[0]-0.08,P+1.0,ch[1]-0.08,ch[0]+0.09,yc+0.5,ch[1]+0.09,OSCURO);
+    return {G:G,PL:PL,L:L,fondo:F};
   }
 
   var M={A:construir('A'),B:construir('B'),C:construir('C')};
@@ -434,12 +448,12 @@ var actual='A', PLANO={}, alCambiar=[];
     var dpr=Math.min(window.devicePixelRatio||1,2),w=Math.round(cv.clientWidth*dpr),h=Math.round(cv.clientHeight*dpr);
     if(cv.width!==w||cv.height!==h){cv.width=w;cv.height=h;}
     gl.viewport(0,0,w,h);gl.clearColor(0,0,0,0);gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);
-    var m=M[actual],asp=w/h,dist=E.dist*(m.L/9*0.5+0.5)/Math.pow(Math.min(1,asp),0.75);
-    var c=[m.L/2,1.2,m.fondo/2+0.1],e=[c[0]+dist*Math.cos(E.alt)*Math.sin(E.giro),c[1]+dist*Math.sin(E.alt),c[2]+dist*Math.cos(E.alt)*Math.cos(E.giro)];
+    var m=M[actual],asp=w/h,tam=Math.max(m.L,m.fondo*1.15),dist=E.dist*(tam/9*0.5+0.5)/Math.pow(Math.min(1,asp),0.75);
+    var c=[m.L/2,1.2,m.fondo/2],e=[c[0]+dist*Math.cos(E.alt)*Math.sin(E.giro),c[1]+dist*Math.sin(E.alt),c[2]+dist*Math.cos(E.alt)*Math.cos(E.giro)];
     var up=E.alt>1.5?[-Math.sin(E.giro),0,-Math.cos(E.giro)]:[0,1,0];
-    gl.uniformMatrix4fv(U.m,false,new Float32Array(mul(persp(0.62,asp,0.5,400),mira(e,c,up))));
-    if(E.tarde){gl.uniform3fv(U.sol,norm([-0.75,0.28,0.6]));gl.uniform3f(U.colSol,1.05,0.62,0.34);gl.uniform3f(U.amb,0.46,0.46,0.56);}
-    else{gl.uniform3fv(U.sol,norm([0.45,0.8,0.55]));gl.uniform3f(U.colSol,0.62,0.6,0.55);gl.uniform3f(U.amb,0.56,0.58,0.6);}
+    gl.uniformMatrix4fv(U.m,false,new Float32Array(mul(persp(0.62,asp,0.5,500),mira(e,c,up))));
+    if(E.tarde){gl.uniform3fv(U.sol,norm([-0.75,0.28,0.6]));gl.uniform3f(U.colSol,1.05,0.66,0.38);gl.uniform3f(U.amb,0.48,0.47,0.55);}
+    else{gl.uniform3fv(U.sol,norm([0.45,0.8,0.55]));gl.uniform3f(U.colSol,0.6,0.59,0.55);gl.uniform3f(U.amb,0.6,0.61,0.6);}
     ['base','cub'].forEach(function(g){if(g==='cub'&&!E.cubierta)return;var b=B[actual][g];
       ['p','n','c'].forEach(function(a){gl.bindBuffer(gl.ARRAY_BUFFER,b[a]);gl.enableVertexAttribArray(Lc[a]);gl.vertexAttribPointer(Lc[a],3,gl.FLOAT,false,0,0);});
       gl.drawArrays(gl.TRIANGLES,0,b.cnt);});
@@ -453,7 +467,6 @@ var actual='A', PLANO={}, alCambiar=[];
   window.addEventListener('resize',pide);
   alCambiar.push(pide);
 
-  // girar con el dedo o el ratón (solo horizontal, para no bloquear el desplazamiento de la página)
   var x0=null,g0=0;
   cv.addEventListener('pointerdown',function(ev){x0=ev.clientX;g0=E.giro;E.auto=false;document.getElementById('pista').style.display='none';try{cv.setPointerCapture(ev.pointerId);}catch(e){}});
   cv.addEventListener('pointermove',function(ev){if(x0===null)return;E.giro=g0-(ev.clientX-x0)*0.008;pide();});
@@ -465,7 +478,7 @@ var actual='A', PLANO={}, alCambiar=[];
   function pon(id,on,txt){var b=bt[id];b.setAttribute('aria-pressed',on?'true':'false');if(txt)b.textContent=txt;}
   function esta(id){return bt[id].getAttribute('aria-pressed')==='true';}
   function boton(id,fn){var b=bt[id]=document.getElementById(id);b.addEventListener('click',function(){fn(!esta(id));pide();});}
-  function camara(){meta.alt=esta('bArriba')?1.53:(esta('bLote')?0.62:0.36);meta.dist=esta('bLote')?66:(esta('bArriba')?28:22);}
+  function camara(){meta.alt=esta('bArriba')?1.53:(esta('bLote')?0.62:0.36);meta.dist=esta('bLote')?62:(esta('bArriba')?27:22);}
   boton('bCubierta',function(on){E.cubierta=!on;pon('bCubierta',on,on?'Poner cubierta':'Quitar cubierta');});
   boton('bArriba',function(on){pon('bArriba',on,on?'De lado':'Desde arriba');E.auto=false;E.giro=on?0:0.62;
     if(on&&E.cubierta&&!esta('bLote')){E.cubierta=false;pon('bCubierta',true,'Poner cubierta');}camara();});
@@ -478,34 +491,38 @@ var actual='A', PLANO={}, alCambiar=[];
 
 /* ====== Contenido que cambia con la opción ====== */
 (function(){
+  var ACENTO={A:'#424D22',B:'#7B7C52',C:'#595959'};
   function planta(op){
-    var m=PLANO[op],pl=m.PL,s=100,mg=0.3,W=m.L,Hh=m.fondo,o='';
+    var m=PLANO[op],pl=m.PL,s=100,mg=0.3,W=m.L,Hh=m.fondo,o='',ac=ACENTO[op];
+    var vw=Math.round((W+2*mg)*s),k=vw/1000,vh=Math.round((Hh+2*mg)*s+60*k);
     function X(v){return Math.round((v+mg)*s);}
     function r(q,f,st,sw){return '<rect x="'+X(q[0])+'" y="'+X(q[1])+'" width="'+Math.round((q[2]-q[0])*s)+'" height="'+Math.round((q[3]-q[1])*s)+'" fill="'+f+'"'+(st?' stroke="'+st+'" stroke-width="'+sw+'"':'')+'/>';}
-    pl.pisos.forEach(function(q){if(q[4]==='deck'){o+=r(q,'#E7D3B4','#A9692F',2);for(var z=q[1]+0.3;z<q[3]-0.05;z+=0.3)o+='<path d="M'+X(q[0])+' '+X(z)+'H'+X(q[2])+'" stroke="#A9692F" stroke-width="1" opacity=".5"/>';}else o+=r(q,'#FBFCFA');});
-    pl.muebles.forEach(function(q){o+=r(q,q[4]?'#20262A':'#DCE3E0','#5E6B6A',2);});
-    pl.muros.forEach(function(q){o+=r(q,'#1D3832');});
-    pl.vanos.forEach(function(q){o+='<path d="M'+X(q[0])+' '+X(q[1])+'L'+X(q[2])+' '+X(q[3])+'" stroke="#6F8F95" stroke-width="4"/>';});
-    OPC[op].rot.forEach(function(t){o+='<text x="'+X(t[0])+'" y="'+X(t[1])+'" fill="#1D3832" font-weight="800" font-size="30" style="font-stretch:62%">'+t[2]+'</text><text x="'+X(t[0])+'" y="'+(X(t[1])+29)+'" fill="#5E6B6A" font-size="23">'+t[3]+'</text>';});
-    OPC[op].marca.forEach(function(t,i){o+='<circle cx="'+X(t[0])+'" cy="'+X(t[1])+'" r="22" fill="#A9692F" stroke="#fff" stroke-width="3"/><text x="'+X(t[0])+'" y="'+(X(t[1])+8)+'" fill="#fff" font-weight="800" font-size="24" text-anchor="middle">'+(i+1)+'</text>';});
-    var vw=Math.round((W+2*mg)*s),vh=Math.round((Hh+2*mg)*s)+50;
-    o+='<text x="'+X(0)+'" y="'+(vh-18)+'" font-size="22" fill="#5E6B6A">Frente '+W.toFixed(2).replace('.',',')+' m. Arriba, la parte alta del lote; abajo, la vista.</text>';
+    pl.pisos.forEach(function(q){if(q[4]==='deck'){o+=r(q,'#EADBC0','#A9743E',2);for(var z=q[1]+0.3;z<q[3]-0.05;z+=0.3)o+='<path d="M'+X(q[0])+' '+X(z)+'H'+X(q[2])+'" stroke="#A9743E" stroke-width="1" opacity=".45"/>';}else o+=r(q,'#FFFFFF');});
+    pl.muebles.forEach(function(q){o+=r(q,q[4]?'#595959':'#E9EBDF','#8E8F73',2);});
+    pl.muros.forEach(function(q){o+=r(q,'#595959');});
+    pl.vanos.forEach(function(q){o+='<path d="M'+X(q[0])+' '+X(q[1])+'L'+X(q[2])+' '+X(q[3])+'" stroke="#ABAC8A" stroke-width="5"/>';});
+    var todos=OPC[op].esp.concat([OPC[op].terraza]),rad=Math.round(30*k),fs=Math.round(34*k);
+    todos.forEach(function(t,i){o+='<circle cx="'+X(t[2])+'" cy="'+X(t[3])+'" r="'+rad+'" fill="'+ac+'" stroke="#fff" stroke-width="'+Math.round(4*k)+'"/><text x="'+X(t[2])+'" y="'+(X(t[3])+Math.round(fs*0.35))+'" fill="#fff" font-weight="500" font-size="'+fs+'" text-anchor="middle">'+(i+1)+'</text>';});
+    o+='<text x="'+X(0)+'" y="'+(vh-Math.round(16*k))+'" font-size="'+Math.round(27*k)+'" fill="#595959" font-weight="300">Frente '+OPC[op].frente+' m. Arriba, la parte alta del lote; abajo, la vista.</text>';
     return '<svg viewBox="0 0 '+vw+' '+vh+'" role="img" aria-label="Planta amueblada de la opción '+op+'">'+o+'</svg>';
   }
   function pinta(){
     var d=OPC[actual];
+    document.body.setAttribute('data-op',actual);
     document.querySelectorAll('.selector button').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.op===actual?'true':'false');});
-    document.getElementById('lema').innerHTML=(d.rec?'<b>Recomendada.</b> ':'')+d.lema;
+    document.getElementById('opTitulo').innerHTML='Opción '+actual+', '+d.nombre.toLowerCase()+(d.rec?'<em>Recomendada</em>':'');
+    document.getElementById('opTexto').textContent=d.texto;
     document.querySelectorAll('[data-op-rotulo]').forEach(function(e){e.textContent='Opción '+actual+', '+d.nombre.toLowerCase();});
+    var n=d.esp.length;
+    document.getElementById('areas').innerHTML='<caption>Áreas de la opción '+actual+'</caption>'+d.esp.map(function(a,i){return '<tr><td>'+(i+1)+'</td><td>'+a[0]+'</td><td>'+a[1]+' m²</td></tr>';}).join('')+
+      '<tr class="total"><td></td><td>Área cubierta</td><td>'+d.cubierta+' m²</td></tr><tr><td>'+(n+1)+'</td><td>'+d.terraza[0]+'</td><td>'+d.terraza[1]+' m²</td></tr><tr class="inv"><td></td><td>Inversión estimada</td><td>Por definir</td></tr>';
     document.getElementById('plano').innerHTML=planta(actual);
-    document.getElementById('recorrido').innerHTML=d.recorrido.map(function(t){return '<li>'+t+'</li>';}).join('');
+    document.getElementById('vive').textContent=d.vive;
     document.getElementById('vista1').textContent=d.vista[0];
     document.getElementById('vista2').textContent=d.vista[1];
-    document.getElementById('areas').innerHTML='<tr><th>Espacio</th><th>Área</th></tr>'+d.areas.map(function(a){return '<tr><td>'+a[0]+'</td><td>'+a[1]+' m²</td></tr>';}).join('')+'<tr class="total"><td>Área cubierta</td><td>'+d.cubierta+' m²</td></tr><tr><td>Deck</td><td>'+d.deck+' m²</td></tr>';
-    document.getElementById('rango').textContent=d.rango;
-    var k=['A','B','C'],f=[['Área cubierta',function(x){return x.cubierta+' m²';}],['Deck',function(x){return x.deck+' m²';}],['Alcobas',function(x){return x.alcobas;}],['Inversión',function(x){return x.rango;}],['Lo mejor',function(x){return x.mejor;}],['Sacrifica',function(x){return x.sacrifica;}]];
-    document.getElementById('compara').innerHTML='<thead><tr><th scope="row"></th>'+k.map(function(q){return '<th class="'+(q===actual?'activa':'')+'">'+q+'<small>'+OPC[q].nombre+'</small>'+(OPC[q].rec?'<span class="rec">Recomendada</span>':'')+'</th>';}).join('')+'</tr></thead><tbody>'+
-      f.map(function(row){return '<tr><th scope="row">'+row[0]+'</th>'+k.map(function(q){return '<td class="'+(q===actual?'activa':'')+'">'+row[1](OPC[q])+'</td>';}).join('')+'</tr>';}).join('')+'</tbody>';
+    var k=['A','B','C'],f=[['Área cubierta',function(x){return x.cubierta+' m²';}],['Terraza',function(x){return x.terraza[1]+' m²';}],['Frente',function(x){return x.frente+' m';}],['Inversión',function(){return 'Por definir';}],['Lo mejor',function(x){return x.mejor;}],['Sacrifica',function(x){return x.sacrifica;}]];
+    document.getElementById('compara').innerHTML='<thead><tr><th scope="row"></th>'+k.map(function(q){return '<th class="c'+q+(q===actual?' activa':'')+'">'+q+'<small>'+OPC[q].nombre+'</small>'+(OPC[q].rec?'<span class="rec">Recomendada</span>':'')+'</th>';}).join('')+'</tr></thead><tbody>'+
+      f.map(function(row){return '<tr><th scope="row">'+row[0]+'</th>'+k.map(function(q){return '<td class="c'+q+(q===actual?' activa':'')+'">'+row[1](OPC[q])+'</td>';}).join('')+'</tr>';}).join('')+'</tbody>';
     alCambiar.forEach(function(fn){fn();});
   }
   document.querySelectorAll('.selector button').forEach(function(b){b.addEventListener('click',function(){actual=b.dataset.op;pinta();});});
