@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Casa de ejemplo, primer diseño | TAUKAR Espacios</title>
+<title>Casa en Suesca, primer diseño | TAUKAR Espacios</title>
 <meta name="robots" content="noindex">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -38,14 +38,14 @@ button{font:inherit;color:inherit}
 body.sin-guia .guia,body.sin-guia .borrador{display:none}
 
 /* Portada, como la del documento: degradado verde a blanco, título espaciado y árbol */
-.cubierta{position:relative;overflow:hidden;background:linear-gradient(100deg,var(--verde-claro) 0%,#F4F7EA 46%,#fff 72%);padding:44px 20px 0}
-.cubierta .arbol{position:absolute;right:-34px;top:8px;height:62%;width:auto;mix-blend-mode:multiply;opacity:.5;pointer-events:none}
-.cubierta .texto{position:relative;max-width:760px;margin:0 auto;padding-right:56px}
+.cubierta{position:relative;overflow:hidden;background:linear-gradient(100deg,var(--verde-claro) 0%,#F4F7EA 46%,#fff 72%);padding:44px 20px 40px;min-height:300px}
+.cubierta .arbol{position:absolute;right:14px;bottom:0;height:92%;max-height:340px;width:auto;mix-blend-mode:multiply;opacity:.75;pointer-events:none}
+.cubierta .texto{position:relative;max-width:760px;margin:0 auto;padding-right:min(36vw,190px)}
 .cubierta h1{margin:0;font-weight:400;font-size:clamp(30px,9vw,54px);line-height:1.15;letter-spacing:.24em;text-transform:uppercase;color:var(--oliva)}
 .cubierta .sub{margin:14px 0 0;font-weight:300;font-size:18px;color:var(--gris)}
 .ficha{margin:18px 0 0;padding:0;list-style:none;font-weight:300;font-size:16px;line-height:1.7}
 .ficha b{font-weight:500;color:var(--oliva)}
-.firma{position:relative;margin:34px -20px 0;background:#fff;padding:14px 20px 16px;display:flex;flex-wrap:wrap;align-items:center;gap:10px 22px}
+.firma{max-width:800px;margin:0 auto;background:#fff;padding:16px 20px 4px;display:flex;flex-wrap:wrap;align-items:center;gap:10px 22px}
 .firma img{width:230px;height:auto}
 .firma address{font-style:normal;font-weight:300;font-size:13px;letter-spacing:.14em;line-height:1.6}
 
@@ -63,6 +63,17 @@ p{margin:0 0 14px;max-width:62ch}
 .programa{margin:0;padding:0;list-style:none;border-top:1px solid var(--linea)}
 .programa li{padding:11px 0 11px 22px;border-bottom:1px solid var(--linea);position:relative}
 .programa li::before{content:"";position:absolute;left:0;top:19px;width:9px;height:7px;background:var(--caqui)}
+/* Determinantes y bioclimática: croquis con texto */
+.croquis{display:grid;grid-template-columns:1fr;gap:0;border-top:1px solid var(--linea)}
+.croquis article{display:grid;grid-template-columns:112px 1fr;gap:14px;align-items:center;padding:12px 0;border-bottom:1px solid var(--linea)}
+.croquis svg{width:112px;height:auto}
+.croquis h3{margin:0 0 3px;font-weight:500;font-size:14px;letter-spacing:.16em;text-transform:uppercase;color:var(--oliva)}
+.croquis p{margin:0;font-weight:300;font-size:16px;line-height:1.4}
+@media(min-width:620px){.croquis{grid-template-columns:1fr 1fr;column-gap:28px}}
+.bloques{background:linear-gradient(180deg,#F4F7EA,#fff);margin:22px -8px 0;padding:6px 4px 2px}
+.bloques text{font-family:var(--fuente)}
+.leyenda{display:flex;flex-wrap:wrap;gap:6px 16px;margin:10px 0 0;padding:0;list-style:none;font-size:14px;font-weight:300}
+.leyenda i{display:inline-block;width:18px;height:11px;margin-right:6px;vertical-align:-1px;border:1px solid rgba(89,89,89,.35)}
 
 /* Bloque de opciones: el color de fondo cambia con cada opción */
 .opciones-bloque{background:var(--op-fondo);margin-top:44px;transition:background .35s}
@@ -136,26 +147,25 @@ footer p{font-size:13px;font-weight:300;margin:14px 0 0}
 <header class="cubierta">
   <img class="arbol" src="arbol.png" alt="">
   <div class="texto">
-    <h1>Casa<br>de ejemplo</h1>
+    <h1>Casa en<br>Suesca</h1>
     <p class="sub">Primer diseño: tres opciones para comparar</p>
     <ul class="ficha">
-      <li><b>Propuesta 1</b>, 13 de noviembre de 2026</li>
-      <li>Para <b>familia Ejemplo</b></li>
+      <li>13 de noviembre de 2026</li>
     </ul>
   </div>
-  <div class="firma">
-    <img src="taukar-espacios.png" alt="TAUKAR Espacios">
-    <address>proyectos@arqteka.com<br>Cra 13 N. 93 – 53<br>Cel 3159762675</address>
-  </div>
 </header>
+<div class="firma">
+  <img src="taukar-espacios.png" alt="TAUKAR Espacios">
+  <address>proyectos@arqteka.com<br>Cra 13 N. 93 – 53<br>Cel 3159762675</address>
+</div>
 
 <main>
-  <p class="guia"><b>Guía, portada.</b> Sigue la portada de tus especificaciones: degradado verde, título espaciado, árbol y logo. Cambia el nombre de la casa, la fecha y el cliente.</p>
+  <p class="guia"><b>Guía, portada.</b> Sigue la portada de tus especificaciones: degradado verde, título espaciado, árbol completo y logo.</p>
 
   <section id="presentacion">
     <div class="rot"><div class="barras"><i></i><i></i><i></i></div><h2>Presentación</h2></div>
     <p>En TAUKAR Espacios diseñamos y construimos casas y cabañas campestres. Este documento reúne el primer diseño de su casa: tres maneras de organizar el mismo programa, para que las recorran, las comparen y nos digan cuál se parece más a la forma en que quieren vivir.</p>
-    <p>Cada opción se puede girar en 3D, ver sin cubierta y ubicar en el lote. Debajo de cada una están sus áreas y su planta. Ninguna es definitiva: la propuesta siguiente se arma con lo que escojan y lo que quieran cambiar.</p>
+    <p>Primero están las condiciones del lote que las tres respetan. Luego cada opción, que se puede girar en 3D, ver sin cubierta y ubicar en el lote, con sus áreas y su planta. Al final, lo que tienen en común en sostenibilidad y bioclimática.</p>
     <p class="guia"><b>Guía, presentación.</b> Texto de relleno escrito por Claude: cámbialo por tu presentación. Dos párrafos bastan: quién eres y qué va a encontrar el cliente.</p>
   </section>
 
@@ -171,13 +181,32 @@ footer p{font-size:13px;font-weight:300;margin:14px 0 0}
       <li>Terraza y zona de BBQ</li>
     </ul>
   </section>
+
+  <section id="determinantes">
+    <div class="rot"><div class="barras"><i></i><i></i><i></i></div><h2>Determinantes de la implantación<small>Comunes a las tres opciones</small></h2></div>
+    <p>Antes de dibujar las opciones definimos lo que el lote le pide a la casa. Las tres cumplen estas cuatro condiciones; cambia la forma, no las reglas.</p>
+    <div class="croquis">
+      <article><svg viewBox="0 0 220 130" aria-hidden="true"><g stroke="#595959" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="70" y="16" width="80" height="26" fill="#E3EACF"/><g stroke="#8E9468" stroke-dasharray="5 5"><path d="M110 42L36 112M110 42L110 120M110 42L184 112"/></g><path d="M30 118C60 96 80 112 104 100S150 92 190 118" stroke="#8E9468"/><path d="M110 60V84M102 76L110 86L118 76" stroke="#424D22" stroke-width="3"/></g></svg><div><h3>Vista principal</h3><p>La casa se abre hacia el valle: sala, terraza y alcoba principal miran a la vista.</p></div></article>
+      <article><svg viewBox="0 0 220 130" aria-hidden="true"><g stroke="#595959" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M12 78L208 118"/><path d="M52 70H168"/><path d="M60 70V88M110 70V98M160 70V108"/><path d="M60 70V40M160 70V40M44 44L110 16L176 44"/><g stroke="#8E9468"><path d="M24 76l4-8M36 79l4-8M186 108l4-8M198 111l4-8"/></g><path d="M96 112L150 123M140 114L151 123L138 127" stroke="#424D22" stroke-width="3"/></g></svg><div><h3>Manejo de la pendiente</h3><p>El terreno baja hacia la vista. La casa se apoya sobre pedestales y deja el piso a nivel, sin cortes ni rellenos.</p></div></article>
+      <article><svg viewBox="0 0 220 130" aria-hidden="true"><g stroke="#595959" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="72" y="52" width="76" height="28" fill="#E3EACF"/><path d="M26 96C50 20 170 20 194 96" stroke="#D98A5F" stroke-dasharray="5 5"/><circle cx="190" cy="92" r="9" stroke="#D98A5F" fill="#F6D9B8"/><circle cx="110" cy="38" r="7" stroke="#D98A5F"/><circle cx="30" cy="92" r="6" stroke="#D98A5F"/><path d="M110 122V98M103 106L110 96L117 106" stroke="#424D22" stroke-width="3"/><text x="122" y="122" font-size="18" fill="#424D22" stroke="none" font-family="sans-serif">N</text></g></svg><div><h3>Orientación respecto al norte</h3><p>Las alcobas reciben el sol de la mañana; los servicios y la fachada más cerrada quedan hacia el sol de la tarde.</p></div></article>
+      <article><svg viewBox="0 0 220 130" aria-hidden="true"><g stroke="#595959" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="30" y="20" width="62" height="24" fill="#CFCFCF"/><rect x="30" y="44" width="62" height="36" fill="#C9D6A8"/><rect x="92" y="20" width="98" height="60" fill="#ABAC8A"/><rect x="136" y="80" width="54" height="34" fill="#C9D6A8"/><rect x="30" y="80" width="106" height="22" fill="#E3C79D"/></g></svg><div><h3>Zonificación de la casa</h3><p>Lo social al centro y hacia la vista, lo privado a los lados y los servicios contra la parte alta del lote.</p></div></article>
+    </div>
+    <div class="bloques" id="bloques"></div>
+    <ul class="leyenda">
+      <li><i style="background:#ABAC8A"></i>Social</li>
+      <li><i style="background:#C9D6A8"></i>Privado</li>
+      <li><i style="background:#CFCFCF"></i>Servicios</li>
+      <li><i style="background:#E3C79D"></i>Terraza</li>
+    </ul>
+    <p class="guia"><b>Guía, determinantes.</b> Texto y croquis supuestos por Claude: puse la vista y el oriente hacia el frente y la pendiente bajando hacia la vista. Ajusta el norte, la vista y la pendiente al lote real, y agrega accesos, vientos, retiros y normas del conjunto si aplican. La vista de bloques usa la opción en L; en la real se cambia por una imagen de Revit con los volúmenes por color.</p>
+  </section>
 </main>
 
 <div class="opciones-bloque">
   <nav class="selector" aria-label="Opción de diseño">
     <div class="fila">
-      <button type="button" data-op="A" aria-pressed="true"><b>A</b><span>Lineal</span></button>
-      <button type="button" data-op="B" aria-pressed="false"><b>B</b><span>En L</span></button>
+      <button type="button" data-op="A" aria-pressed="true"><b>A</b><span>En L</span></button>
+      <button type="button" data-op="B" aria-pressed="false"><b>B</b><span>Lineal</span></button>
       <button type="button" data-op="C" aria-pressed="false"><b>C</b><span>Compacta</span></button>
     </div>
   </nav>
@@ -199,7 +228,7 @@ footer p{font-size:13px;font-weight:300;margin:14px 0 0}
 </div>
 
 <main>
-  <p class="guia"><b>Guía, opciones.</b> El texto de cada opción va arriba del 3D y las áreas debajo. El fondo cambia con la opción (verde claro, arena, gris niebla) y ese mismo color acompaña la planta, las vistas y su columna del comparativo. Las tres casas son de relleno, pero cumplen el programa: se cambian por los modelos de Revit.</p>
+  <p class="guia"><b>Guía, opciones.</b> La opción en L va de primera. El texto de cada opción va arriba del 3D y las áreas debajo, con la terraza sumada al total. El fondo cambia con la opción (verde claro, arena, gris niebla) y ese mismo color acompaña la planta, las vistas y su columna del comparativo. Las tres casas son de relleno, pero cumplen el programa: se cambian por los modelos de Revit.</p>
 
   <section id="planta">
     <div class="rot"><div class="barras"><i></i><i></i><i></i></div><h2>La planta<small data-op-rotulo></small></h2></div>
@@ -220,22 +249,21 @@ footer p{font-size:13px;font-weight:300;margin:14px 0 0}
   <section id="comparar">
     <div class="rot"><div class="barras"><i></i><i></i><i></i></div><h2>Las tres, lado a lado</h2></div>
     <table class="compara" id="compara"></table>
-    <p class="guia"><b>Guía, el comparativo.</b> Las dos últimas filas son las que deciden: lo mejor de cada una y lo que sacrifica. Marca una como recomendada y di por qué.</p>
+    <p class="guia"><b>Guía, el comparativo.</b> Las dos últimas filas son las que deciden: lo mejor de cada una y lo que sacrifica. Si quieres recomendar una, dilo aquí en una línea.</p>
   </section>
 
-  <section id="lote">
-    <div class="rot"><div class="barras"><i></i><i></i><i></i></div><h2>El lote</h2></div>
-    <p>La casa va en la parte media del lote, con el lado largo hacia la vía y la vista. Se levanta 40 cm del terreno sobre pedestales: no se mueve tierra y el agua corre por debajo. El botón "Ver el lote" del modelo muestra linderos, vía y acceso.</p>
-    <p class="guia"><b>Guía, el lote.</b> Hoy el botón muestra un lote dibujado. Para la localización real: foto satelital del lote como piso del modelo, o el mapa 3D de Google con la casa implantada (necesita clave de Google y coordenadas).</p>
-  </section>
-
-  <section id="sigue">
-    <div class="rot"><div class="barras"><i></i><i></i><i></i></div><h2>Lo que sigue</h2></div>
-    <ul class="sigue">
-      <li><b>Esta semana</b> Revisan las tres opciones y nos cuentan cuál prefieren y qué cambiarían.</li>
-      <li><b>En 8 días</b> Propuesta 2: la opción elegida con ajustes y presupuesto por capítulos.</li>
-      <li><b>Al aprobar</b> Planos de construcción, licencia y cronograma de obra.</li>
-    </ul>
+  <section id="bioclimatica">
+    <div class="rot"><div class="barras"><i></i><i></i><i></i></div><h2>Sostenibilidad y bioclimática<small>Comunes a las tres opciones</small></h2></div>
+    <p>La casa aprovecha el clima de la sabana en vez de pelear con él. Estas estrategias van en cualquiera de las tres opciones.</p>
+    <div class="croquis">
+      <article><svg viewBox="0 0 220 130" aria-hidden="true"><g stroke="#595959" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M14 112H206"/><path d="M62 112V96M158 112V96M110 112V96"/><path d="M52 96H168"/><path d="M62 96V60M158 96V60"/><path d="M42 64L110 32L178 64"/><path d="M8 82C50 70 76 90 112 80S174 72 204 82M194 75L205 82L194 89" stroke="#6FA3CF" stroke-width="3"/><path d="M110 56V18M103 27L110 17L117 27" stroke="#D98A5F" stroke-width="3"/></g></svg><div><h3>Ventilación cruzada</h3><p>Ventanas enfrentadas y cumbrera alta: el aire atraviesa la casa y el calor sale por arriba.</p></div></article>
+      <article><svg viewBox="0 0 220 130" aria-hidden="true"><g stroke="#595959" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M14 112H206"/><path d="M62 112V96M158 112V96M110 112V96"/><path d="M52 96H168"/><path d="M62 96V60M158 96V60"/><path d="M42 64L110 32L178 64"/><circle cx="196" cy="18" r="9" stroke="#D98A5F" fill="#F6D9B8"/><g stroke="#D98A5F"><path d="M188 26L176 60"/><path d="M184 22L170 56" stroke-dasharray="4 5"/><path d="M190 30L164 92" stroke-dasharray="4 5"/></g><path d="M178 64V72" stroke="#424D22" stroke-width="3"/></g></svg><div><h3>Aleros y control solar</h3><p>Aleros amplios que protegen muros y ventanas del sol alto y de la lluvia, y dejan entrar el sol bajo de la mañana.</p></div></article>
+      <article><svg viewBox="0 0 220 130" aria-hidden="true"><g stroke="#595959" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M12 86L208 116"/><path d="M52 78H168"/><path d="M60 78V94M110 78V101M160 78V109"/><path d="M60 78V48M160 78V48M44 52L110 24L176 52"/><path d="M20 100C70 96 120 112 200 124" stroke="#6FA3CF" stroke-width="3" stroke-dasharray="2 7"/><g stroke="#8E9468"><path d="M76 96l3-7M90 98l3-7M126 104l3-7M140 106l3-7"/></g></g></svg><div><h3>Casa elevada</h3><p>Sobre pedestales: no se corta el terreno, el agua corre por debajo y la madera queda lejos de la humedad.</p></div></article>
+      <article><svg viewBox="0 0 220 130" aria-hidden="true"><g stroke="#595959" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M14 112H206"/><path d="M62 112V96M158 112V96M110 112V96"/><path d="M52 96H168"/><path d="M62 96V60M158 96V60"/><path d="M42 64L110 32L178 64"/><g stroke="#6FA3CF"><path d="M60 8l-4 12M90 4l-4 12M120 6l-4 12M150 4l-4 12" stroke-dasharray="3 5"/><path d="M178 64V98H186" stroke-width="3"/><rect x="186" y="84" width="22" height="28" fill="#DCEAF5"/></g></g></svg><div><h3>Aguas lluvias</h3><p>La cubierta recoge el agua en canales y la lleva a tanques de reserva para riego y aseo.</p></div></article>
+      <article><svg viewBox="0 0 220 130" aria-hidden="true"><g stroke="#595959" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M14 112H206"/><path d="M62 112V96M158 112V96M110 112V96"/><path d="M52 96H168"/><path d="M62 96V60M158 96V60"/><path d="M42 64L110 32L178 64"/><circle cx="190" cy="18" r="9" stroke="#D98A5F" fill="#F6D9B8"/><path d="M122 38L164 58" stroke="#424D22" stroke-width="6"/><g stroke="#D98A5F"><path d="M182 24L156 44M186 28L166 50" stroke-dasharray="4 5"/></g><rect x="140" y="80" width="12" height="16" fill="#E3EACF"/><path d="M146 80V62"/></g></svg><div><h3>Energía solar</h3><p>Una de las aguas de la cubierta queda orientada para paneles y calentador solar de agua.</p></div></article>
+      <article><svg viewBox="0 0 220 130" aria-hidden="true"><g stroke="#595959" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M14 112H206"/><path d="M50 112V44M110 112V44M170 112V44M40 44H180M50 80H170"/><path d="M50 62L68 44M110 62L92 44M110 62L128 44M170 62L152 44"/><path d="M34 46L110 14L186 46"/></g></svg><div><h3>Madera y aislamiento</h3><p>Estructura en madera inmunizada, aislamiento en piso, muros y cubierta, y acabados naturales de bajo mantenimiento.</p></div></article>
+    </div>
+    <p class="guia"><b>Guía, bioclimática.</b> Seis estrategias de relleno, tomadas de cómo construyes (pedestales, madera inmunizada, aislamiento, tanques, solar). Deja solo las que el proyecto vaya a cumplir de verdad y cambia los croquis por los tuyos a mano, que se ven mejor.</p>
   </section>
 </main>
 
@@ -243,7 +271,7 @@ footer p{font-size:13px;font-weight:300;margin:14px 0 0}
   <div class="dentro">
     <img src="taukar-espacios.png" alt="TAUKAR Espacios">
     <address>proyectos@arqteka.com<br>Cra 13 N. 93 – 53<br>Cel 3159762675</address>
-    <p>Propuesta 1, 13 de noviembre de 2026. Diseño preliminar sujeto a ajustes, sin validez para construcción.</p>
+    <p>13 de noviembre de 2026. Diseño preliminar sujeto a ajustes, sin validez para construcción.</p>
   </div>
 </footer>
 
@@ -251,24 +279,24 @@ footer p{font-size:13px;font-weight:300;margin:14px 0 0}
 /* ====== Datos de cada opción ======
    esp: [nombre, área, x, z] — x, z ubican el número en la planta (metros). */
 var OPC={
-  A:{nombre:'Lineal',rec:true,
-     texto:'Todo en una sola nave de 15,00 m de frente. La alcoba principal y la auxiliar quedan en los extremos, separadas por la zona social, y la terraza corre al frente con el BBQ en la punta.',
-     esp:[['Alcoba principal','15,1',2.1,5.25],['Baño principal','5,8',1.65,1.7],['Vestier','4,3',3.3,1.6],['Alcoba auxiliar','17,3',12.6,5.2],['Sala, comedor y cocina','36,0',7.2,3.05],['Baño social','4,3',11.3,1.85],['Zona de ropas','3,6',12.75,0.95],['Depósito','3,6',13.95,1.55]],
-     cubierta:'90,0',terraza:['Terraza y zona de BBQ','29,2',8.7,7.6],frente:'15,00',
-     mejor:'Las dos alcobas y lo social miran a la vista',sacrifica:'Pide 15 m de frente libre',
-     vive:'Se llega por la terraza y se entra directo a la sala. La alcoba principal queda a la izquierda, con su baño y vestier atrás; la auxiliar a la derecha, junto al baño social. Ropas y depósito abren hacia atrás.',
-     vista:['Desde el acceso, la casa de 15 m con la terraza al frente','Mirando a la vista, puerta vidriera abierta']},
-  B:{nombre:'En L',
-     texto:'La alcoba principal sale en un ala hacia el frente, con su baño y vestier, y la terraza queda recogida en la esquina, protegida del viento. El frente baja a 10,80 m.',
-     esp:[['Alcoba principal','15,1',7.4,11.2],['Baño principal','5,8',9.9,7.65],['Vestier','4,3',7.75,7.35],['Alcoba auxiliar','17,3',2.4,5.25],['Sala, comedor y cocina','36,0',7.8,3.05],['Baño social','4,3',4.05,1.85],['Zona de ropas','3,6',2.25,0.95],['Depósito','3,6',0.95,1.55]],
-     cubierta:'90,0',terraza:['Terraza y zona de BBQ','19,8',5.5,8.25],frente:'10,80',
+  A:{nombre:'En L',
+     texto:'La alcoba principal sale en un ala hacia el frente, con su baño y vestier, y la terraza queda recogida en la esquina, protegida del viento. El frente es de 10,80 m.',
+     esp:[['Alcoba principal','15,1',7.4,11.2],['Baño principal','5,8',9.9,7.65],['Vestier','4,3',7.75,7.35],['Alcoba auxiliar','17,3',2.4,5.25],['Sala, comedor y cocina','36,0',7.8,3.05],['Baño social','4,3',4.05,1.85],['Zona de ropas','3,6',2.25,0.95],['Depósito','3,6',0.95,1.55],['Terraza y zona de BBQ','19,8',5.5,8.25]],
+     total:'109,8',frente:'10,80',
      mejor:'Terraza protegida; alcoba principal aparte',sacrifica:'Cubierta más compleja; terraza menor',
      vive:'La terraza queda abrazada entre la sala y el ala de la alcoba principal. Desde la sala se pasa al vestier, que reparte al baño y a la alcoba. La auxiliar queda al otro lado, con salida propia a la terraza.',
      vista:['Desde el acceso, con el ala de la alcoba al costado','Mirando a la terraza, cerrada por el ala']},
+  B:{nombre:'Lineal',
+     texto:'Todo en una sola nave de 15,00 m de frente. La alcoba principal y la auxiliar quedan en los extremos, separadas por la zona social, y la terraza corre al frente con el BBQ en la punta.',
+     esp:[['Alcoba principal','15,1',2.1,5.25],['Baño principal','5,8',1.65,1.7],['Vestier','4,3',3.3,1.6],['Alcoba auxiliar','17,3',12.6,5.2],['Sala, comedor y cocina','36,0',7.2,3.05],['Baño social','4,3',11.3,1.85],['Zona de ropas','3,6',12.75,0.95],['Depósito','3,6',13.95,1.55],['Terraza y zona de BBQ','29,2',8.7,7.6]],
+     total:'119,2',frente:'15,00',
+     mejor:'Las dos alcobas y lo social miran a la vista',sacrifica:'Pide 15 m de frente libre',
+     vive:'Se llega por la terraza y se entra directo a la sala. La alcoba principal queda a la izquierda, con su baño y vestier atrás; la auxiliar a la derecha, junto al baño social. Ropas y depósito abren hacia atrás.',
+     vista:['Desde el acceso, la casa de 15 m con la terraza al frente','Mirando a la vista, puerta vidriera abierta']},
   C:{nombre:'Compacta',
      texto:'Dos crujías bajo una sola cubierta: la alcoba principal, el vestier, el baño y los servicios atrás; lo social y la alcoba auxiliar al frente. Menos fachada y recorridos más cortos.',
-     esp:[['Alcoba principal','15,1',3.45,2.95],['Baño principal','8,6',7.55,2.7],['Vestier','6,5',5.1,2.8],['Alcoba auxiliar','17,3',1.5,7.1],['Sala, comedor y cocina','30,2',9.7,5.6],['Baño social','4,3',4.5,7.35],['Zona de ropas','4,3',9.2,2.8],['Depósito','4,3',9.6,1.25]],
-     cubierta:'90,7',terraza:['Terraza y zona de BBQ','19,4',9.9,9.8],frente:'10,80',
+     esp:[['Alcoba principal','15,1',3.45,2.95],['Baño principal','8,6',7.55,2.7],['Vestier','6,5',5.1,2.8],['Alcoba auxiliar','17,3',1.5,7.1],['Sala, comedor y cocina','30,2',9.7,5.6],['Baño social','4,3',4.5,7.35],['Zona de ropas','4,3',9.2,2.8],['Depósito','4,3',9.6,1.25],['Terraza y zona de BBQ','19,4',9.9,9.8]],
+     total:'110,2',frente:'10,80',
      mejor:'Menos fachada y cubierta: la más económica',sacrifica:'La alcoba principal queda atrás, sin vista directa',
      vive:'Se entra por la terraza a la sala. Un pequeño vestíbulo reparte a la alcoba auxiliar, al baño social y al vestier, que lleva a la alcoba principal y a su baño. Ropas y depósito quedan junto a la cocina.',
      vista:['Desde el acceso, un volumen compacto a dos aguas','Mirando a la terraza desde el comedor']}
@@ -356,6 +384,7 @@ document.getElementById('verGuia').addEventListener('click',function(){document.
         quadA('cub',a,b,b2,a2,[hint[0],0,0],c);quadA('cub',b,cc,c2,b2,[0,0,1],c);});
       [[z1,1],[z1-T,-1]].forEach(function(q){tri('cub',[x0,H,q[0]],[x1,H,q[0]],[xm,yc,q[0]],[0,0,q[1]],m);});}
 
+    op=({A:'B',B:'A',C:'C'})[op];   // la opción A es la casa en L y la B la lineal
     var L=(op==='A')?15:10.8, F=(op==='A')?8.7:(op==='B'?12:11.1), ch, yc, PU=2.05;
     // terreno, lote, vía y árboles
     box('base',-50,-0.3,-45,60,0,58,'#C7CDB0');
@@ -501,7 +530,7 @@ document.getElementById('verGuia').addEventListener('click',function(){document.
     pl.muebles.forEach(function(q){o+=r(q,q[4]?'#595959':'#E9EBDF','#8E8F73',2);});
     pl.muros.forEach(function(q){o+=r(q,'#595959');});
     pl.vanos.forEach(function(q){o+='<path d="M'+X(q[0])+' '+X(q[1])+'L'+X(q[2])+' '+X(q[3])+'" stroke="#ABAC8A" stroke-width="5"/>';});
-    var todos=OPC[op].esp.concat([OPC[op].terraza]),rad=Math.round(30*k),fs=Math.round(34*k);
+    var todos=OPC[op].esp,rad=Math.round(30*k),fs=Math.round(34*k);
     todos.forEach(function(t,i){o+='<circle cx="'+X(t[2])+'" cy="'+X(t[3])+'" r="'+rad+'" fill="'+ac+'" stroke="#fff" stroke-width="'+Math.round(4*k)+'"/><text x="'+X(t[2])+'" y="'+(X(t[3])+Math.round(fs*0.35))+'" fill="#fff" font-weight="500" font-size="'+fs+'" text-anchor="middle">'+(i+1)+'</text>';});
     o+='<text x="'+X(0)+'" y="'+(vh-Math.round(16*k))+'" font-size="'+Math.round(27*k)+'" fill="#595959" font-weight="300">Frente '+OPC[op].frente+' m. Arriba, la parte alta del lote; abajo, la vista.</text>';
     return '<svg viewBox="0 0 '+vw+' '+vh+'" role="img" aria-label="Planta amueblada de la opción '+op+'">'+o+'</svg>';
@@ -510,23 +539,67 @@ document.getElementById('verGuia').addEventListener('click',function(){document.
     var d=OPC[actual];
     document.body.setAttribute('data-op',actual);
     document.querySelectorAll('.selector button').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.op===actual?'true':'false');});
-    document.getElementById('opTitulo').innerHTML='Opción '+actual+', '+d.nombre.toLowerCase()+(d.rec?'<em>Recomendada</em>':'');
+    document.getElementById('opTitulo').textContent='Opción '+actual+', '+d.nombre.toLowerCase();
     document.getElementById('opTexto').textContent=d.texto;
     document.querySelectorAll('[data-op-rotulo]').forEach(function(e){e.textContent='Opción '+actual+', '+d.nombre.toLowerCase();});
-    var n=d.esp.length;
     document.getElementById('areas').innerHTML='<caption>Áreas de la opción '+actual+'</caption>'+d.esp.map(function(a,i){return '<tr><td>'+(i+1)+'</td><td>'+a[0]+'</td><td>'+a[1]+' m²</td></tr>';}).join('')+
-      '<tr class="total"><td></td><td>Área cubierta</td><td>'+d.cubierta+' m²</td></tr><tr><td>'+(n+1)+'</td><td>'+d.terraza[0]+'</td><td>'+d.terraza[1]+' m²</td></tr><tr class="inv"><td></td><td>Inversión estimada</td><td>Por definir</td></tr>';
+      '<tr class="total"><td></td><td>Área total</td><td>'+d.total+' m²</td></tr><tr class="inv"><td></td><td>Presupuesto aproximado</td><td>$ 000000</td></tr><tr class="inv"><td></td><td>Valor del m²</td><td>$ 000000</td></tr>';
     document.getElementById('plano').innerHTML=planta(actual);
     document.getElementById('vive').textContent=d.vive;
     document.getElementById('vista1').textContent=d.vista[0];
     document.getElementById('vista2').textContent=d.vista[1];
-    var k=['A','B','C'],f=[['Área cubierta',function(x){return x.cubierta+' m²';}],['Terraza',function(x){return x.terraza[1]+' m²';}],['Frente',function(x){return x.frente+' m';}],['Inversión',function(){return 'Por definir';}],['Lo mejor',function(x){return x.mejor;}],['Sacrifica',function(x){return x.sacrifica;}]];
-    document.getElementById('compara').innerHTML='<thead><tr><th scope="row"></th>'+k.map(function(q){return '<th class="c'+q+(q===actual?' activa':'')+'">'+q+'<small>'+OPC[q].nombre+'</small>'+(OPC[q].rec?'<span class="rec">Recomendada</span>':'')+'</th>';}).join('')+'</tr></thead><tbody>'+
+    var k=['A','B','C'],f=[['Área total',function(x){return x.total+' m²';}],['Frente',function(x){return x.frente+' m';}],['Presupuesto aprox.',function(){return '$ 000000';}],['Valor del m²',function(){return '$ 000000';}],['Lo mejor',function(x){return x.mejor;}],['Sacrifica',function(x){return x.sacrifica;}]];
+    document.getElementById('compara').innerHTML='<thead><tr><th scope="row"></th>'+k.map(function(q){return '<th class="c'+q+(q===actual?' activa':'')+'">'+q+'<small>'+OPC[q].nombre+'</small>'+'</th>';}).join('')+'</tr></thead><tbody>'+
       f.map(function(row){return '<tr><th scope="row">'+row[0]+'</th>'+k.map(function(q){return '<td class="c'+q+(q===actual?' activa':'')+'">'+row[1](OPC[q])+'</td>';}).join('')+'</tr>';}).join('')+'</tbody>';
     alCambiar.forEach(function(fn){fn();});
   }
   document.querySelectorAll('.selector button').forEach(function(b){b.addEventListener('click',function(){actual=b.dataset.op;pinta();});});
   pinta();
+})();
+/* ====== Vista fija de bloques conceptuales (opción en L) ====== */
+(function(){
+  var s=19,ox=372,oy=150,o='';
+  function g(z){return 0.25-0.12*z;}                       // el terreno baja hacia el frente (la vista)
+  function P(x,y,z){return [Math.round((ox+(x-z)*0.866*s)*10)/10,Math.round((oy+(x+z)*0.5*s-y*s)*10)/10];}
+  function pol(pts,fill,st,sw,extra){return '<polygon points="'+pts.map(function(p){return p.join(',');}).join(' ')+'" fill="'+fill+'" stroke="'+(st||'none')+'" stroke-width="'+(sw||0)+'" stroke-linejoin="round"'+(extra||'')+'/>';}
+  function lin(a,b,st,sw,extra){return '<path d="M'+a.join(' ')+'L'+b.join(' ')+'" stroke="'+st+'" stroke-width="'+sw+'" fill="none" stroke-linecap="round"'+(extra||'')+'/>';}
+  function flecha(a,b,st,sw){var dx=b[0]-a[0],dy=b[1]-a[1],l=Math.sqrt(dx*dx+dy*dy),ux=dx/l,uy=dy/l,t=11;
+    return lin(a,b,st,sw)+'<path d="M'+(b[0]-ux*t-uy*t*0.55)+' '+(b[1]-uy*t+ux*t*0.55)+'L'+b[0]+' '+b[1]+'L'+(b[0]-ux*t+uy*t*0.55)+' '+(b[1]-uy*t-ux*t*0.55)+'" stroke="'+st+'" stroke-width="'+sw+'" fill="none" stroke-linecap="round" stroke-linejoin="round"/>';}
+  function txt(p,t,fs,fill,anc,w){return '<text x="'+p[0]+'" y="'+p[1]+'" font-size="'+fs+'" fill="'+fill+'" text-anchor="'+(anc||'middle')+'" font-weight="'+(w||500)+'" letter-spacing=".08em">'+t+'</text>';}
+  // terreno con curvas de nivel
+  var X0=-4,X1=15,Z0=-4,Z1=16;
+  o+=pol([P(X0,g(Z0),Z0),P(X1,g(Z0),Z0),P(X1,g(Z1),Z1),P(X0,g(Z1),Z1)],'#E9EDDA');
+  for(var z=Z0+1;z<Z1;z+=1.9){var d='';for(var x=X0;x<=X1;x+=1){var zz=z+0.45*Math.sin(x*0.55+z*0.8),q=P(x,g(zz),zz);d+=(x===X0?'M':'L')+q[0]+' '+q[1];}
+    o+='<path d="'+d+'" stroke="#B9BFA2" stroke-width="1" fill="none"/>';}
+  // bloques: [x0,z0,x1,z1,alto,techo,lado izq.,lado der.,rótulo]
+  var Y=0.5,B=[
+    [0,0,4.8,2.4,2.6,'#CFCFCF','#B4B4B4','#A6A6A6','SERVICIOS',1.9,0.75],
+    [0,2.4,4.8,6,2.6,'#C9D6A8','#AEBD8B','#A0AF7E','ALCOBA AUXILIAR'],
+    [4.8,0,10.8,6,3.0,'#ABAC8A','#93946F','#868762','SOCIAL'],
+    [0,6,6.6,9,0.15,'#E3C79D','#C9AB7E','#BD9F72','TERRAZA',2.6,7.3],
+    [6.6,6,10.8,12,2.6,'#C9D6A8','#AEBD8B','#A0AF7E','ALCOBA PRINCIPAL']];
+  // pedestales bajo los bordes del frente
+  [[0,9],[3.3,9],[6.6,9],[6.6,12],[8.7,12],[10.8,12],[10.8,9],[10.8,6],[10.8,3],[10.8,0],[0,6],[0,3]].forEach(function(q){o+=lin(P(q[0],g(q[1]),q[1]),P(q[0],Y,q[1]),'#595959',2.2);});
+  B.forEach(function(b){var t=Y+b[4];
+    o+=pol([P(b[0],Y,b[3]),P(b[2],Y,b[3]),P(b[2],t,b[3]),P(b[0],t,b[3])],b[6],'#fff',1.2);
+    o+=pol([P(b[2],Y,b[1]),P(b[2],Y,b[3]),P(b[2],t,b[3]),P(b[2],t,b[1])],b[7],'#fff',1.2);
+    o+=pol([P(b[0],t,b[1]),P(b[2],t,b[1]),P(b[2],t,b[3]),P(b[0],t,b[3])],b[5],'#fff',1.2);
+    var c=P(b[9]!==undefined?b[9]:(b[0]+b[2])/2,t,b[10]!==undefined?b[10]:(b[1]+b[3])/2),pal=b[8].split(' ');
+    pal.forEach(function(w,i){o+=txt([c[0],c[1]+5+(i-(pal.length-1)/2)*16],w,14,'#2F3518');});});
+  // vista principal
+  o+=flecha(P(3.3,0.2,9.6),P(3.3,g(15.2),15.2),'#424D22',3.5)+flecha(P(8.7,0.2,12.6),P(8.7,g(15.4),15.4),'#424D22',3.5);
+  var v=P(6.0,g(16.4),16.4);o+=txt([v[0]-78,v[1]+6],'VISTA PRINCIPAL',17,'#424D22');
+  // pendiente
+  o+=flecha(P(13.3,g(1)+0.1,1),P(13.3,g(12)+0.1,12),'#8A6A3A',3);
+  var pe=P(13.9,g(6),6);o+=txt([pe[0]+6,pe[1]-4],'PENDIENTE',15,'#8A6A3A','start')+txt([pe[0]+6,pe[1]+14],'baja hacia la vista',14,'#8A6A3A','start',300);
+  // sol: sale al frente (oriente) y se oculta atrás (occidente)
+  var a=P(-2.5,2.5,14.5),m=P(-8,9.5,5),b2=P(1.5,4.5,-4.5);
+  o+='<path d="M'+a[0]+' '+a[1]+'Q'+m[0]+' '+m[1]+' '+b2[0]+' '+b2[1]+'" stroke="#D98A5F" stroke-width="2" stroke-dasharray="6 6" fill="none"/>';
+  o+='<circle cx="'+a[0]+'" cy="'+a[1]+'" r="11" fill="#F6D9B8" stroke="#D98A5F" stroke-width="2"/><circle cx="'+b2[0]+'" cy="'+b2[1]+'" r="8" fill="#fff" stroke="#D98A5F" stroke-width="2"/>';
+  o+=txt([a[0]+2,a[1]+30],'Sol de la mañana',14,'#B5693F','middle',400)+txt([b2[0]+14,b2[1]+5],'Sol de la tarde',14,'#B5693F','start',400);
+  // norte
+  var n0=P(12.2,g(-3),-3.2),n1=P(15.4,g(-3),-3.2);o+=flecha(n0,n1,'#595959',3)+txt([n1[0]+12,n1[1]+10],'N',20,'#595959');
+  document.getElementById('bloques').innerHTML='<svg viewBox="0 0 720 540" role="img" aria-label="Vista de bloques de la casa en L sobre el terreno: zonas social, privada, servicios y terraza, con la vista principal, la pendiente, el recorrido del sol y el norte">'+o+'</svg>';
 })();
 </script>
 </body>
