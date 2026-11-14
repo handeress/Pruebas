@@ -7,3 +7,7 @@ Borrador de guía para presentar el primer diseño de una casa a un cliente, con
 - Las notas en color madera son instrucciones para armar la página real; se ocultan con el botón de arriba y se borran antes de enviarla.
 
 Se ve en https://handeress.github.io/Pruebas/ cuando GitHub Pages está activo (Settings → Pages → Deploy from a branch → main / root).
+
+## PDF
+
+`herramientas/generar_pdf.py` arma el PDF de 12 hojas (formato de las especificaciones de TAUKAR Espacios) a partir de `index.html`. Ver las notas al inicio del archivo.
