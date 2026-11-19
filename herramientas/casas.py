@@ -257,8 +257,38 @@ def implantar(grupos, apoyos, sitio):
                 retiros=dist), sh
 
 
+VISTA_PLANO = (-153.0, 382.0)   # dirección de la vista principal marcada por Andrés en el plano del lote (px, 14 arriba a la izq.)
+ACCESO = (16.0, 7.0)            # zona de acceso en la esquina 14: m a lo largo de 14-13 y de 14-17
+ENTRADA = (3.5, 6.5)            # tramo del lindero 14-17 (m desde 14) por donde se entra desde la vía peatonal
+
+
+def frente_y_acceso(sitio):
+    V = {n: np.array([x, y]) for n, x, y in sitio["vertices"]}
+    img = {"14": (118, 312), "13": (604, 234), "17": (282, 872), "18": (764, 795)}
+    A = np.array([np.r_[V[n], 1] for n in img]); B = np.array([img[n] for n in img], float)
+    M = np.linalg.lstsq(A, B, rcond=None)[0][:2].T; U, _, Vt = np.linalg.svd(M); Q = U @ Vt
+    v = np.array(VISTA_PLANO); v /= np.linalg.norm(v); d = v @ Q
+    sitio["sitio"]["frente"] = [round(float(d[0]), 4), round(float(d[1]), 4)]
+    u13 = (V["13"] - V["14"]) / np.linalg.norm(V["13"] - V["14"]); u17 = (V["17"] - V["14"]) / np.linalg.norm(V["17"] - V["14"])
+    a, b = ACCESO
+    sitio["acceso"] = [[round(float(q[0]), 2), round(float(q[1]), 2)] for q in (V["14"], V["14"] + a * u13, V["14"] + a * u13 + b * u17, V["14"] + b * u17)]
+    # entrada: del lindero 14-17 hacia afuera hasta el eje de la vía peatonal
+    n = np.array([-u17[1], u17[0]])
+    if n @ (V["13"] - V["14"]) > 0: n = -n            # hacia afuera del lote
+    pe = np.array(sitio["peatonal"])[:, :2]
+    def hasta_via(p0):
+        for t in np.arange(0, 25, 0.1):
+            q = p0 + t * n
+            if np.min(np.linalg.norm(pe - q, axis=1)) < 0.3: return q + 0.75 * n
+        return p0 + 5 * n
+    e0, e1 = V["14"] + ENTRADA[0] * u17, V["14"] + ENTRADA[1] * u17
+    sitio["entrada"] = [[round(float(q[0]), 2), round(float(q[1]), 2)] for q in (e0, e1, hasta_via(e1), hasta_via(e0))]
+    json.dump(sitio, open(os.path.join(RAIZ, "terreno", "sitio.json"), "w"), separators=(",", ":"))
+
+
 if __name__ == "__main__":
     sitio = json.load(open(os.path.join(RAIZ, "terreno", "sitio.json")))
+    frente_y_acceso(sitio)
     os.makedirs(os.path.join(RAIZ, "casas"), exist_ok=True)
     for k, fn in (("A", casa_L), ("B", casa_patio)):
         g, ap = fn()
@@ -367,7 +397,7 @@ def svg_lote(sitio, oA, detalle=False):
     S = 6.0   # px por metro
     if detalle:   # acercamiento a la esquina 14 con la casa
         d_ = np.array(oA["frente"]); ex_ = np.array([-d_[1], d_[0]]); O_ = np.array(oA["origen"])
-        cj = [O_ + a * ex_ + b * d_ for a in (0, oA["L"]) for b in (0, oA["fondo"])] + [V["14"]]
+        cj = [O_ + a * ex_ + b * d_ for a in (0, oA["L"]) for b in (0, oA["fondo"])] + [V["14"]] + [np.array(q) for q in sitio["entrada"]]
         q = f(np.array(cj)); x0, y0 = q.min(0) - 7; x1, y1 = q.max(0) + 7
         S = 930.0 / (x1 - x0)
     def X(q): return (q[..., 0] - x0) * S
@@ -397,6 +427,12 @@ def svg_lote(sitio, oA, detalle=False):
     # lindero
     d = "M" + "L".join(f"{a:.1f} {b:.1f}" for a, b in zip(X(Lq), Y(Lq))) + "Z"
     o.append(f'<path d="{d}" fill="rgba(255,255,255,.35)" stroke="#424D22" stroke-width="2.4" stroke-linejoin="round"/>')
+    # zona de acceso y entrada
+    for nom in ("entrada", "acceso"):
+        q = f(np.array(sitio[nom]))
+        o.append(f'<polygon points="{" ".join(f"{a:.1f},{b:.1f}" for a, b in zip(X(q), Y(q)))}" fill="#CFCFC8" stroke="#595959" stroke-width="1.2"/>')
+    q = f(np.mean(sitio["acceso"], 0))
+    o.append(f'<text x="{X(q):.1f}" y="{Y(q)+5:.1f}" font-size="{18 if detalle else 10}" fill="#424D22" font-weight="500" text-anchor="middle" letter-spacing=".12em">ACCESO</text>')
     # casa en L
     d_ = np.array(oA["frente"]); ex = np.array([-d_[1], d_[0]]); O = np.array(oA["origen"])
     def loc2sit(x, z): return O + np.multiply.outer(x, ex) + np.multiply.outer(z, d_) if np.ndim(x) else O + x * ex + z * d_
@@ -430,9 +466,9 @@ def svg_lote(sitio, oA, detalle=False):
         fz = 22 if detalle else 13
         o.append(f'<text x="{X(m):.1f}" y="{Y(m):.1f}" transform="rotate({ang:.1f} {X(m):.1f} {Y(m):.1f})" dy="-6" font-size="{fz}" fill="#C0392B" text-anchor="middle" font-weight="500">{dd[i]:.2f} m</text>')
     # vista
-    c = O + 10.5 * ex + 18.5 * d_; c2 = c + (5 if detalle else 9) * d_; qa, qb = f(np.array([c, c2]))
+    c = O + oA["L"] / 2 * ex + (oA["fondo"] + 1.0) * d_; c2 = c + (6 if detalle else 22) * d_; qa, qb = f(np.array([c, c2]))
     o.append(f'<path d="M{X(qa):.1f} {Y(qa):.1f}L{X(qb):.1f} {Y(qb):.1f}" stroke="#424D22" stroke-width="2.4" marker-end="url(#fl)"/>')
-    o.append(f'<text x="{X(qb)+6:.1f}" y="{Y(qb)+14:.1f}" font-size="{20 if detalle else 13}" fill="#424D22" font-weight="500">vista</text>')
+    o.append(f'<text x="{X(qb)+8:.1f}" y="{Y(qb)+4:.1f}" font-size="{20 if detalle else 13}" fill="#424D22" font-weight="500">vista principal</text>')
     o.append('</g><defs><marker id="fl" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#424D22"/></marker></defs>')
     # mojones
     for n_, p in V.items():
