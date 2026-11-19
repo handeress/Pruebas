@@ -20,7 +20,7 @@ async def main():
           const c=document.getElementById('modelo');c.style.height='640px';c.style.maxHeight='640px';window.dispatchEvent(new Event('resize'));}""")
         data={}
         OPC=await pg.evaluate("OPC")
-        for op in "ABC":
+        for op in "AB":
             await pg.evaluate(f"document.querySelector('.selector button[data-op=\"{op}\"]').click()")
             await pg.evaluate("(()=>{const m=window.__modelo;m.meta.dist=15.5;m.E.dist=15.5;m.pide();})()")
             await pg.wait_for_timeout(600)
@@ -61,7 +61,7 @@ async def main():
         S.append(f'''<section class="s">{cab("Determinantes aplicados","Vista de bloques, opción en L")}<div class="cuerpo blo"><div class="bl">{bloques}</div>
 <ul class="ley"><li><i style="background:#ABAC8A"></i>Social</li><li><i style="background:#C9D6A8"></i>Privado</li><li><i style="background:#CFCFCF"></i>Servicios</li><li><i style="background:#E3C79D"></i>Terraza</li></ul></div></section>''')
         # 5-10 opciones
-        for op in "ABC":
+        for op in "AB":
             d=OPC[op]; n=d["nombre"]
             filas="".join(f'<tr><td class="n">{i+1}</td><td>{html.escape(e[0])}</td><td class="r">{e[1]} m²</td></tr>' for i,e in enumerate(d["esp"]))
             filas+=f'<tr class="tot"><td></td><td>Área total</td><td class="r">{d["total"]} m²</td></tr><tr class="inv"><td></td><td>Presupuesto aproximado</td><td class="r">$ 000000</td></tr><tr class="inv"><td></td><td>Valor del m²</td><td class="r">$ 000000</td></tr>'
@@ -73,8 +73,8 @@ async def main():
 <div class="der"><img class="m3d" src="{b64(f"t_{op}.png","image/png")}"><p class="vive">{html.escape(d["vive"])}</p><p class="nota">Los números de la planta son los de la tabla de áreas.</p></div></div></section>''')
         # 11 comparativo
         rows=[("Área total",lambda x:x["total"]+" m²"),("Frente",lambda x:x["frente"]+" m"),("Presupuesto aproximado",lambda x:"$ 000000"),("Valor del m²",lambda x:"$ 000000"),("Lo mejor",lambda x:html.escape(x["mejor"])),("Sacrifica",lambda x:html.escape(x["sacrifica"]))]
-        th="".join(f'<th style="background:{FONDO[k]}"><b>{k}</b><span>{OPC[k]["nombre"]}</span></th>' for k in "ABC")
-        tb="".join("<tr><th>"+r[0]+"</th>"+"".join(f'<td style="background:{FONDO[k]}66">{r[1](OPC[k])}</td>' for k in "ABC")+"</tr>" for r in rows)
+        th="".join(f'<th style="background:{FONDO[k]}"><b>{k}</b><span>{OPC[k]["nombre"]}</span></th>' for k in "AB")
+        tb="".join("<tr><th>"+r[0]+"</th>"+"".join(f'<td style="background:{FONDO[k]}66">{r[1](OPC[k])}</td>' for k in "AB")+"</tr>" for r in rows)
         S.append(f'''<section class="s">{cab("Las tres, lado a lado","Comparativo")}<div class="cuerpo"><table class="cmp"><thead><tr><th></th>{th}</tr></thead><tbody>{tb}</tbody></table></div></section>''')
         # 12 bioclimática
         S.append(f'''<section class="s">{cab("Sostenibilidad y bioclimática","Comunes a las tres opciones")}<div class="cuerpo"><p class="intro">{html.escape(biop)}</p><div class="croq c3">{bio}</div></div></section>''')
