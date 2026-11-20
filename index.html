@@ -389,10 +389,12 @@ document.getElementById('verGuia').addEventListener('click',function(){document.
         var u=(cz-e[1])/(e[3]-e[1]),tope=e[4]+(e[5]-e[4])*u-0.45;t=Math.min(t,tope+0.8*dd);});
       return t;}
     return {aPlano:aPlano,aLocal:aLocal,y0:y0,T:T};}
-  function armar(k){var F=marco(k),m=CASAS[k],PV=[],N=[],I=[],n=141,paso=2.0,cx=m.L/2,cz=m.fondo/2,id=new Int32Array(n*n).fill(-1);
-    for(var j=0;j<n;j++)for(var i=0;i<n;i++){var lx=cx+(i-(n-1)/2)*paso,lz=cz+(j-(n-1)/2)*paso,h=F.T(lx,lz);if(isNaN(h))continue;
-      id[j*n+i]=PV.length/3;PV.push(lx,h,lz);N.push(0,0,0);}
-    for(var j=0;j<n-1;j++)for(var i=0;i<n-1;i++){var a=id[j*n+i],b=id[j*n+i+1],c=id[(j+1)*n+i],d=id[(j+1)*n+i+1];if(a<0||b<0||c<0||d<0)continue;I.push(a,c,b,b,c,d);}
+  // malla del terreno: cada 0,5 m alrededor de la casa (escaleras y terrazas quedan bien asentadas) y cada 2,5 m lejos
+  function ejes(c0,c1,ext){var o=[],v;for(v=c0-ext;v<c0-6;v+=2.5)o.push(v);for(v=c0-6;v<c1+6;v+=0.5)o.push(v);for(v=c1+6;v<=c1+ext;v+=2.5)o.push(v);return o;}
+  function armar(k){var F=marco(k),m=CASAS[k],PV=[],N=[],I=[],XS=ejes(0,m.L,130),ZS=ejes(0,m.fondo,130),nx=XS.length,nz=ZS.length,id=new Int32Array(nx*nz).fill(-1);
+    for(var j=0;j<nz;j++)for(var i=0;i<nx;i++){var lx=XS[i],lz=ZS[j],h=F.T(lx,lz);if(isNaN(h))continue;
+      id[j*nx+i]=PV.length/3;PV.push(lx,h,lz);N.push(0,0,0);}
+    for(var j=0;j<nz-1;j++)for(var i=0;i<nx-1;i++){var a=id[j*nx+i],b=id[j*nx+i+1],c=id[(j+1)*nx+i],d=id[(j+1)*nx+i+1];if(a<0||b<0||c<0||d<0)continue;I.push(a,c,b,b,c,d);}
     for(var q=0;q<I.length;q+=3){var A=I[q]*3,Bq=I[q+1]*3,Cq=I[q+2]*3;var nn=cross(sub([PV[Bq],PV[Bq+1],PV[Bq+2]],[PV[A],PV[A+1],PV[A+2]]),sub([PV[Cq],PV[Cq+1],PV[Cq+2]],[PV[A],PV[A+1],PV[A+2]]));if(nn[1]<0)nn=[-nn[0],-nn[1],-nn[2]];
       [A,Bq,Cq].forEach(function(o){N[o]+=nn[0];N[o+1]+=nn[1];N[o+2]+=nn[2];});}
     var o={cnt:I.length,y0:F.y0,p:bufArr(new Float32Array(PV)),n:bufArr(new Float32Array(N))};
