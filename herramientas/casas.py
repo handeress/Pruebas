@@ -7,7 +7,8 @@ y la implantación en el lote 10 (respetando el retiro a los linderos 14-13 y 14
 Marco local de cada casa: x a lo ancho, z hacia el frente (la vista), y hacia arriba;
 piso terminado a y = P. Correr:  python3 herramientas/casas.py
 """
-import json, base64, math, os
+import json, base64, math, os, sys
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import numpy as np
 
 AQUI = os.path.dirname(os.path.abspath(__file__))
@@ -58,52 +59,54 @@ class Malla:
 
 
 # ---------------------------------------------------------------- A · en L
+from modelo import construir
+
+L_MUROS_INT = [(4.12, 0.92, 4.24, 2.80), (4.12, 3.50, 4.24, 3.72),
+               (4.24, 0.92, 6.86, 1.04), (7.66, 0.92, 11.63, 1.04), (12.03, 0.92, 12.25, 1.04), (12.95, 0.92, 13.10, 1.04),
+               (6.64, 1.04, 6.76, 3.72), (11.46, 1.04, 11.58, 3.72), (12.98, 1.04, 13.10, 3.72),
+               (4.24, 2.24, 4.34, 2.36), (5.04, 2.24, 6.64, 2.36), (12.08, 1.04, 12.20, 1.76), (11.58, 1.64, 12.20, 1.76),
+               (14.10, 0.12, 14.22, 2.40), (15.92, 0.12, 16.04, 1.64), (15.92, 2.34, 16.04, 2.86),
+               (16.04, 1.32, 19.84, 1.44), (17.64, 1.44, 17.76, 2.86), (16.04, 2.74, 17.76, 2.86)]
+DISENO_A = dict(
+    bloques=[("P", 0, 0, 19.96, 3.84, 3.0), ("S", 14.10, 5.84, 19.96, 14.18, 3.5)],
+    vidrio=[(14.10, 3.84, 16.04, 5.84, 2.7)], alto_vidrio=2.7,
+    muros_ext=[
+        ((0, 0, 19.96, 0.12), "P", [(0.6, 3.6, "A"), (4.5, 6.4, "A"), (7.0, 11.2, "A"), (11.8, 12.8, "A"), (14.57, 15.57, "D"), (16.4, 19.4, "A")]),
+        ((0, 3.72, 19.96, 3.84), "P", [(0.5, 3.7, "PT"), (4.5, 6.3, "A"), (7.1, 11.1, "PT"), (11.8, 12.8, "A"), (13.2, 14.0, "PT"), (14.22, 15.92, "O"), (18.1, 19.5, "V")]),
+        ((0, 0.12, 0.12, 3.72), "P", [(0.9, 2.9, "V")]),
+        ((19.84, 0.12, 19.96, 3.72), "P", [(0.3, 1.2, "A"), (2.0, 3.4, "A")]),
+        ((14.10, 5.84, 19.96, 5.96), "S", [(14.22, 15.92, "O"), (16.4, 19.6, "K")]),
+        ((14.10, 14.06, 19.96, 14.18), "S", [(14.4, 19.66, "PT")]),
+        ((14.10, 5.96, 14.22, 14.06), "S", [(7.6, 10.3, "PT"), (11.0, 13.8, "PT")]),
+        ((19.84, 5.96, 19.96, 14.06), "S", [(7.0, 8.8, "V"), (10.6, 13.8, "PT")]),
+        ((14.10, 3.84, 14.22, 5.84), "G", [(3.84, 5.84, "G")]),
+        ((15.92, 3.84, 16.04, 5.84), "G", [(3.84, 5.84, "G")]),
+    ],
+    muros_int=[(r, "S" if r[1] > 5 else "P", []) for r in L_MUROS_INT],
+    terrazas=[(10.1, 7.46, 14.1, 10.46, 0.0, "deck"), (10.96, 14.18, 19.96, 17.18, -2.5, "deck")],
+    escaleras=[(10.96, 10.46, 11.96, 14.18, 0.0, -2.5)],
+    muebles=[
+        ("cama", (0.12, 1.12, 2.12, 2.72, "W")), ("mesa_noche", (0.12, 0.6, 0.57, 1.05)), ("mesa_noche", (0.12, 2.79, 0.57, 3.24)),
+        ("closet", (4.4, 2.42, 6.5, 2.98)), ("bano", (4.24, 1.04, 6.64, 2.24)),
+        ("cama", (7.4, 1.04, 8.3, 2.94, "N")), ("cama", (9.6, 1.04, 10.5, 2.94, "N")), ("mesa_noche", (8.7, 1.08, 9.2, 1.5)), ("closet", (10.9, 1.1, 11.44, 3.0)),
+        ("bano", (11.58, 1.76, 12.98, 3.72)), ("estante", (16.1, 0.14, 19.8, 0.55)), ("bano", (16.04, 1.44, 17.64, 2.74)),
+        ("lavadora", (18.0, 1.5, 18.65, 2.1)), ("lavadora", (18.7, 1.5, 19.35, 2.1)), ("meson", (19.2, 2.3, 19.82, 3.6)),
+        ("meson", (16.2, 5.97, 19.82, 6.57)), ("nevera", (19.12, 6.62, 19.82, 7.32)), ("meson", (16.3, 7.6, 18.5, 8.4)),
+        ("mesa", (15.9, 9.4, 17.9, 10.3)), ("tapete", (14.9, 11.0, 18.9, 13.6)), ("sofa", (15.0, 11.2, 17.6, 12.1, "N")),
+        ("mesa_centro", (15.6, 12.5, 17.0, 13.2)), ("sofa", (18.3, 11.6, 19.2, 12.6, "E")),
+        ("asoleadora", (10.5, 8.2, 11.2, 10.1)), ("asoleadora", (11.6, 8.2, 12.3, 10.1)),
+        ("meson", (15.0, 14.3, 19.5, 14.9), -2.5), ("mesa", (15.6, 15.8, 17.8, 16.7), -2.5),
+    ],
+)
+
+
 def casa_L():
-    d = json.load(open(os.path.join(AQUI, "fuentes", "casa_L_geo.json")))
-    def lee(k):
-        T = np.frombuffer(base64.b64decode(d[k]["p"]), np.float32).reshape(-1, 3, 3).copy()
-        C = np.frombuffer(base64.b64decode(d[k]["c"]), np.uint8).reshape(-1, 3, 3)[:, 0].copy()
-        return T, C
-    out = {}
-    # bloques rectangulares: se sube la parte alta de muros, vidrios y marcos hasta una cubierta plana
-    ALTO = {"priv": 2.976, "soc": 3.651}
-    def bloque(x, z):
-        if z <= -3.10: return "priv", 2.4 + 0.15 * (z + 7.0)
-        if z >= -1.20 and x >= 4.0: return "soc", 2.4 + 0.15 * (z + 1.16)
-        return None, None
-    def estirar(T):
-        V = T.reshape(-1, 3)
-        for i in range(len(V)):
-            b, h = bloque(V[i, 0], V[i, 2])
-            if b and V[i, 1] > 2.0 and h > 2.0:
-                V[i, 1] = 2.0 + (V[i, 1] - 2.0) * (ALTO[b] - 2.0) / (h - 2.0)
-        return V.reshape(-1, 3, 3)
-    Tm, Cm = lee("muro"); out["base"] = [(estirar(Tm), Cm)]
-    # opaco: sin árboles ni el terreno supuesto; sin pilares, dados y contenciones (se apoya en el terreno real)
-    T, C = lee("opaco")
-    fuera = {(51, 81, 56), (89, 63, 45), (22, 22, 25), (153, 150, 142), (178, 178, 173)}
-    m = np.array([tuple(c) not in fuera for c in C])
-    madera = (C == (119, 81, 51)).all(1)
-    m &= ~(madera & (T[:, :, 1].min(1) < -0.2))          # troncos de los pilares árbol
-    m &= (np.abs(T[:, :, 0]).max(1) < 12) & (T[:, :, 2].min(1) > -9) & (T[:, :, 2].max(1) < 12)
-    m &= ~(C == (51, 51, 51)).all(1)                       # barandas de terraza y escalera
-    m &= ~(madera & (T[:, :, 0].max(1) < 4.05) & (T[:, :, 2].min(1) > 0.3))   # pasamanos de madera
-    T, C = estirar(T[m]), C[m].copy()
-    C[(C == (43, 43, 43)).all(1)] = (128, 128, 128)        # marcos grises
-    out["base"].append((T, C))
-    Tv, Cv = lee("vidrio")
-    mv = ~((Tv[:, :, 0].max(1) < 4.05) & (Tv[:, :, 2].min(1) > 0.3))   # vidrio de barandas
-    out["vid"] = [(estirar(Tv[mv]), Cv[mv])]
-    M = Malla(); BL = (237, 234, 226)
-    M.caja("cub", -10.0, -7.0, 9.96, -3.16, ALTO["priv"], ALTO["priv"] + 0.15, BL)
-    M.caja("cub", 4.1, -1.16, 9.96, 7.18, ALTO["soc"], ALTO["soc"] + 0.15, BL)
-    out["cub"] = [(np.array(M.g["cub"][0], np.float32), np.array(M.g["cub"][1], np.uint8))]
-    # bloques y terrazas en coordenadas de la malla (x, z) para apoyos y planta
-    apoyos = [(-10, -7, 9.96, -3.16, 0.0), (4.1, -3.16, 5.92, -1.16, 0.0), (4.1, -1.16, 9.96, 7.18, 0.0)]
-    apoyos.append((0.1, 0.46, 4.1, 3.46, 0.0))        # terraza 15
-    apoyos.append((0.96, 7.18, 9.96, 10.18, -2.5))    # terraza 17 (BBQ)
-    out["plataforma"] = [(-10.0, -7.6, 10.5, 2.0)]          # alcobas y mitad de la terraza 15 a nivel (malla)
-    out["zref"] = -5.1
+    out = construir(DISENO_A)
+    out = {k: [v] for k, v in out.items()}
+    apoyos = [(0, 0, 19.96, 3.84, 0.0), (14.10, 3.84, 16.04, 5.84, 0.0), (14.10, 5.84, 19.96, 14.18, 0.0),
+              (10.1, 7.46, 14.1, 10.46, 0.0), (10.96, 14.18, 19.96, 17.18, -2.5)]
+    out["plataforma"] = [(-0.5, -0.6, 20.5, 8.96)]      # alcobas y mitad de la terraza 15 a nivel
+    out["zref"] = 1.92
     return out, apoyos
 
 
@@ -133,7 +136,7 @@ B_DATOS = dict(
         ((12.34, 1.44, 12.46, 3.72), "NE", []),
         ((9.00, 3.84, 9.12, 9.76), "G", [(3.84, 9.76, "G")]),
         ((10.82, 3.84, 10.94, 9.76), "G", [(3.84, 9.76, "G")]),
-        ((5.84, 9.76, 14.18, 9.88), "S", [(6.2, 8.9, "PT"), (9.12, 10.82, "O"), (11.6, 13.8, "V")]),
+        ((5.84, 9.76, 14.18, 9.88), "S", [(6.2, 8.9, "PT"), (9.12, 10.82, "O"), (11.6, 13.8, "K")]),
         ((5.84, 15.58, 14.18, 15.70), "S", [(6.1, 13.9, "PT")]),
         ((5.84, 9.88, 5.96, 15.58), "S", [(10.4, 15.2, "PT")]),
         ((14.06, 9.88, 14.18, 15.58), "S", [(10.0, 10.9, "D"), (12.0, 14.6, "V")]),
@@ -141,83 +144,39 @@ B_DATOS = dict(
     patio=(3.84, 3.84, 9.00, 9.76), deck=(4.96, 6.76, 8.96, 9.76), bbq=(6.38, 15.70, 15.38, 18.70),
     stairs=(14.18, 9.88, 15.38, 15.70, 1.0),
 )
-H_BAJO, H_ALTO = 3.00, 3.00     # cubiertas planas: bloques rectangulares
-GRIS_MURO = (214, 213, 207); MADERA = (168, 119, 76); MADERA_OSC = (119, 81, 51); DECK = (142, 104, 71)
-PISO_BORDE = (150, 146, 138); TEJA = (68, 71, 73); SOFITO = (188, 142, 94); VIDRIO = (147, 178, 198); MARCO = (128, 128, 128)
+INTERIORES_B = {"W": [4, 5, 6, 7, 8], "NE": [15, 16, 17]}   # índices de muros interiores en B_DATOS["walls"]
 
 
 def casa_patio():
-    D = B_DATOS; M = Malla()
-    bl = {b[0]: b for b in D["blocks"]}
-
-    def alto(bid):
-        if bid == "G":
-            return lambda x, z: H_BAJO
-        _, x0, z0, x1, z1, lo = bl[bid]
-        def f(x, z):
-            t = (z - z0) / (z1 - z0) if lo == "N" else (x - x0) / (x1 - x0)
-            return H_BAJO + (H_ALTO - H_BAJO) * min(1, max(0, t))
-        return f
-    # plataformas
-    for b in D["blocks"]:
-        M.caja("base", b[1], b[2], b[3], b[4], -0.25, 0, PISO_BORDE, top=(196, 170, 132))
-    for g in D["glass"]:
-        M.caja("base", *g, -0.25, 0, PISO_BORDE, top=(205, 203, 196))
-    M.caja("base", *D["patio"], -0.25, -0.02, PISO_BORDE, top=(200, 198, 190))
-    M.caja("base", *D["deck"], -0.15, 0.02, DECK)
-    x0, z0, x1, z1 = D["bbq"]
-    M.caja("base", x0, z0, x1, z1, -2.75, -2.5, DECK)
-    M.caja("base", x0 + 1.0, z0 + 0.2, x1 - 0.6, z0 + 0.8, -2.5, -1.6, (150, 148, 140))
-    # escalera: descanso a nivel y 14 contrahuellas de 0.18
+    D = B_DATOS; alto = {"W": 3.0, "N": 3.0, "NE": 3.0, "S": 3.4}
+    ints = {i for v in INTERIORES_B.values() for i in v}
     sx0, sz0, sx1, sz1, ld = D["stairs"]
-    M.caja("base", sx0, sz0, sx1, sz0 + ld, -0.25, 0, DECK)
-    run = min(0.27, (sz1 - sz0 - ld) / 14)
-    for i in range(14):
-        za = sz0 + ld + i * run; tp = -(i + 1) * 0.18
-        M.caja("base", sx0, za, sx1, za + run, tp - 0.12, tp, DECK)
-    # muros con vanos
-    for r, bid, ops in D["walls"]:
-        x0, z0, x1, z1 = r; h = (x1 - x0) >= (z1 - z0)
-        a0, a1 = (x0, x1) if h else (z0, z1)
-        f = alto(bid)
-        tramos, cur = [], a0
-        for o in sorted(ops):
-            if o[0] > cur: tramos.append(("S", cur, o[0]))
-            tramos.append((o[2], o[0], o[1])); cur = o[1]
-        if cur < a1: tramos.append(("S", cur, a1))
-        for k, s0, s1 in tramos:
-            rr = (s0, z0, s1, z1) if h else (x0, s0, x1, s1)
-            def W(ya, yb=None):
-                if yb is None: M.caja("base", *rr, ya, 0, GRIS_MURO, ytop=f)
-                else: M.caja("base", *rr, ya, yb, GRIS_MURO)
-            def G(ya, yb):
-                c = ((rr[0] + rr[2]) / 2, (rr[1] + rr[3]) / 2)
-                if h: M.caja("vid", rr[0], c[1] - 0.01, rr[2], c[1] + 0.01, ya, yb, VIDRIO)
-                else: M.caja("vid", c[0] - 0.01, rr[1], c[0] + 0.01, rr[3], ya, yb, VIDRIO)
-                # marco perimetral delgado
-                if h:
-                    for xx in (rr[0], rr[2] - 0.05): M.caja("base", xx, c[1] - 0.03, xx + 0.05, c[1] + 0.03, ya, yb, MARCO)
-                else:
-                    for zz in (rr[1], rr[3] - 0.05): M.caja("base", c[0] - 0.03, zz, c[0] + 0.03, zz + 0.05, ya, yb, MARCO)
-            if k == "S": W(0)
-            elif k == "PT": G(0, 2.4); W(2.4)
-            elif k == "V": M.caja("base", *rr, 0, 0.9, GRIS_MURO); G(0.9, 2.2); W(2.2)
-            elif k == "A": M.caja("base", *rr, 0, 1.7, GRIS_MURO); G(1.7, 2.2); W(2.2)
-            elif k == "D": W(2.1)
-            elif k == "O": W(2.4)
-            elif k == "G": G(0, H_BAJO)
-    # cubiertas planas del color de los muros, sin aleros
-    for b in D["blocks"]:
-        _, x0, z0, x1, z1, lo = b
-        M.caja("cub", x0, z0, x1, z1, H_ALTO, H_ALTO + 0.15, GRIS_MURO)
-    for g in D["glass"]:
-        M.caja("vid", g[0] - 0.1, g[1], g[2] + 0.1, g[3], H_BAJO, H_BAJO + 0.04, VIDRIO)
-        for zz in np.arange(g[1] + 0.3, g[3], 1.0):
-            M.caja("base", g[0] - 0.1, zz, g[2] + 0.1, zz + 0.08, H_BAJO - 0.1, H_BAJO, MADERA)
-    out = {k: [(np.array(v[0], np.float32), np.array(v[1], np.uint8))] for k, v in M.g.items() if v[0]}
-    out_extra = dict(plataforma=[(0.0, 3.0, 3.84, 15.70), (0.0, 0.0, 14.86, 8.26)], zref=9.0)   # ala de alcobas y mitad de la terraza
-    apoyos = [(b[1], b[2], b[3], b[4], 0.0) for b in D["blocks"]] + [tuple(D["glass"][0]) + (0.0,), tuple(D["patio"]) + (0.0,), tuple(D["bbq"]) + (-2.5,), (sx0, sz0, sx1, sz0 + ld, 0.0)]
-    out.update(out_extra)
+    d = dict(
+        bloques=[(b[0], b[1], b[2], b[3], b[4], alto[b[0]]) for b in D["blocks"]],
+        vidrio=[tuple(D["glass"][0]) + (2.7,)], alto_vidrio=2.7,
+        muros_ext=[w for i, w in enumerate(D["walls"]) if i not in ints],
+        muros_int=[w for i, w in enumerate(D["walls"]) if i in ints],
+        terrazas=[tuple(D["patio"]) + (0.0, "patio"), tuple(D["deck"]) + (0.02, "deck"), tuple(D["bbq"]) + (-2.5, "deck"),
+                  (sx0, sz0, sx1, sz0 + ld, 0.0, "deck")],
+        escaleras=[(sx0, sz0 + ld, sx1, sz1, 0.0, -2.5)],
+        muebles=[
+            ("closet", (0.12, 4.3, 1.9, 4.85)), ("cama", (0.12, 5.2, 2.02, 6.1, "W")), ("cama", (0.12, 7.4, 2.02, 8.3, "W")), ("mesa_noche", (0.12, 6.5, 0.55, 6.95)),
+            ("bano", (0.12, 2.72, 2.80, 4.12)), ("bano", (0.12, 9.06, 2.80, 10.18)), ("closet", (0.12, 10.35, 0.72, 11.42)),
+            ("cama", (0.12, 12.8, 2.12, 14.4, "W")), ("mesa_noche", (0.12, 12.25, 0.55, 12.7)), ("mesa_noche", (0.12, 14.5, 0.55, 14.95)),
+            ("estante", (11.9, 0.14, 14.7, 0.55)), ("bano", (10.94, 1.44, 12.34, 3.72)),
+            ("lavadora", (12.6, 3.0, 13.25, 3.65)), ("lavadora", (13.3, 3.0, 13.95, 3.65)), ("meson", (14.1, 1.5, 14.72, 2.9)),
+            ("meson", (11.0, 9.89, 14.05, 10.49)), ("nevera", (10.3, 9.95, 10.95, 10.6)), ("meson", (11.4, 11.3, 13.2, 12.1)),
+            ("mesa", (11.4, 13.3, 13.2, 14.2)), ("tapete", (6.4, 11.0, 9.4, 13.8)),
+            ("sofa", (6.3, 11.2, 7.1, 13.4, "W")), ("sofa", (8.6, 11.2, 9.4, 13.4, "E")), ("mesa_centro", (7.4, 11.7, 8.3, 12.9)),
+            ("asoleadora", (5.4, 7.2, 6.1, 9.1)), ("asoleadora", (6.5, 7.2, 7.2, 9.1)),
+            ("arbol", (5.2, 5.3, 1.0)), ("arbol", (7.8, 5.0, 1.2)), ("arbusto", (4.4, 8.6, 0.45)), ("arbusto", (8.5, 4.4, 0.4)),
+            ("arbol", (4.8, 12.6, 0.9)), ("arbusto", (4.9, 14.6, 0.4)),
+            ("meson", (6.6, 16.0, 7.2, 18.4), -2.5), ("mesa", (10.0, 16.6, 12.0, 17.6), -2.5),
+        ])
+    out = {k: [v] for k, v in construir(d).items()}
+    out["plataforma"] = [(0.0, 3.0, 3.84, 15.70), (0.0, 0.0, 14.86, 8.26)]   # ala de alcobas y mitad de la terraza
+    out["zref"] = 9.0
+    apoyos = [(b[1], b[2], b[3], b[4], 0.0) for b in D["blocks"]] + [tuple(D["glass"][0]) + (0.0,), tuple(D["patio"]) + (0.0,), tuple(D["bbq"]) + (-2.5,)]
     return out, apoyos
 
 
@@ -312,7 +271,7 @@ L_MUROS_INT = [(4.12, 0.92, 4.24, 2.80), (4.12, 3.50, 4.24, 3.72),
                (16.04, 1.32, 19.84, 1.44), (17.64, 1.44, 17.76, 2.86), (16.04, 2.74, 17.76, 2.86)]
 L_MUROS_EXT = [(0, 0, 19.96, 0.12), (0, 3.72, 14.22, 3.84), (15.92, 3.72, 19.96, 3.84), (0, 0.12, 0.12, 3.72), (19.84, 0.12, 19.96, 3.72),
                (14.10, 5.84, 14.22, 5.96), (15.92, 5.84, 19.96, 5.96), (14.10, 14.06, 19.96, 14.18), (14.10, 5.96, 14.22, 14.06), (19.84, 5.96, 19.96, 14.06)]
-L_PLAN = (-10.0, -7.0)      # planta = malla - L_PLAN
+L_PLAN = (0.0, 0.0)         # la malla ya está en coordenadas de planta
 
 
 def tri_planta(grupo_b64, sh, pl):
