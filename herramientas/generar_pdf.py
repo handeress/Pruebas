@@ -50,7 +50,7 @@ async def main():
         # 1 portada
         S.append(f'''<section class="s portada"><div class="panel"></div><img class="arbg" src="{arbol}">
 <div class="pt"><h1>CASA EN<br>SUESCA</h1><p class="pd">Primer diseño:</p><ol><li>Determinantes de la implantación</li><li>Opciones de diseño</li><li>Sostenibilidad y bioclimática</li></ol><p class="fe">{fecha}</p></div>
-<div class="con">proyectos@arqteka.com<br>Cra 13 N. 93 – 53<br>Cel 3159762675</div><img class="lg" src="{logo}"></section>''')
+<div class="con">proyectos@arqteka.com<br>Cll 99 N. 11 b - 66<br>Cel 3159762675</div><img class="lg" src="{logo}"></section>''')
         # 2 presentación + programa
         S.append(f'''<section class="s">{cab("Presentación","Programa del proyecto")}<div class="cuerpo dos">
 <div><h3>Presentación</h3>{"".join("<p>"+html.escape(x)+"</p>" for x in pres)}</div>
