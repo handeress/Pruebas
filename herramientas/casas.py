@@ -107,6 +107,8 @@ def casa_L():
               (10.1, 7.46, 14.1, 10.46, 0.0), (10.96, 14.18, 19.96, 17.18, -2.5)]
     out["plataforma"] = [(-0.5, -0.6, 20.5, 8.96)]      # alcobas y mitad de la terraza 15 a nivel
     out["zref"] = 1.92
+    out["pads"] = [(10.96, 14.18, 19.96, 17.18, -2.5)]
+    out["escal"] = [DISENO_A["escaleras"][0]]
     return out, apoyos
 
 
@@ -176,6 +178,8 @@ def casa_patio():
     out = {k: [v] for k, v in construir(d).items()}
     out["plataforma"] = [(0.0, 3.0, 3.84, 15.70), (0.0, 0.0, 14.86, 8.26)]   # ala de alcobas y mitad de la terraza
     out["zref"] = 9.0
+    out["pads"] = [tuple(D["bbq"]) + (-2.5,)]
+    out["escal"] = d["escaleras"]
     apoyos = [(b[1], b[2], b[3], b[4], 0.0) for b in D["blocks"]] + [tuple(D["glass"][0]) + (0.0,), tuple(D["patio"]) + (0.0,), tuple(D["bbq"]) + (-2.5,)]
     return out, apoyos
 
@@ -183,7 +187,7 @@ def casa_patio():
 # ---------------------------------------------------------------- implantación
 def implantar(grupos, apoyos, sitio):
     """Lleva la casa al marco local (x, z >= 0, piso en y = P) y calcula el origen en el lote."""
-    plat = grupos.pop("plataforma"); zref = grupos.pop("zref")
+    plat = grupos.pop("plataforma"); zref = grupos.pop("zref"); pads = grupos.pop("pads"); escal = grupos.pop("escal")
     todos = np.concatenate([T.reshape(-1, 3) for g in grupos.values() for T, C in g])
     mn = todos.min(0); mx = todos.max(0)
     sh = np.array([-mn[0], P, -mn[2]], np.float32)
@@ -212,7 +216,9 @@ def implantar(grupos, apoyos, sitio):
     return dict(L=round(Lw, 3), fondo=round(Fd, 3), P=P, grupos=res, apoyos=ap,
                 origen=[round(float(O[0]), 3), round(float(O[1]), 3)], frente=[round(float(d[0]), 4), round(float(d[1]), 4)],
                 retiros=dist, plataforma=[[round(float(r[0] + sh[0]), 2), round(float(r[1] + sh[2]), 2), round(float(r[2] + sh[0]), 2), round(float(r[3] + sh[2]), 2)] for r in plat],
-                zref=round(float(zref + sh[2]), 2)), sh
+                zref=round(float(zref + sh[2]), 2),
+                pads=[[round(float(r[0] + sh[0]), 2), round(float(r[1] + sh[2]), 2), round(float(r[2] + sh[0]), 2), round(float(r[3] + sh[2]), 2), round(float(r[4] + P), 2)] for r in pads],
+                escal=[[round(float(e[0] + sh[0]), 2), round(float(e[1] + sh[2]), 2), round(float(e[2] + sh[0]), 2), round(float(e[3] + sh[2]), 2), round(float(e[4] + P), 2), round(float(e[5] + P), 2)] for e in escal]), sh
 
 
 VISTA_PLANO = (-153.0, 382.0)   # dirección de la vista principal marcada por Andrés en el plano del lote (px, 14 arriba a la izq.)

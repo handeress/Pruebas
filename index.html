@@ -93,7 +93,9 @@ p{margin:0 0 14px;max-width:62ch}
 #modelo:active{cursor:grabbing}
 .sin3d{display:none;padding:80px 20px;text-align:center}
 .controles{position:absolute;left:0;right:0;bottom:12px;display:flex;flex-wrap:wrap;gap:6px;justify-content:center;padding:0 10px}
-.controles button{background:rgba(255,255,255,.92);border:1px solid var(--caqui);padding:8px 11px;font-size:14px;letter-spacing:.04em;cursor:pointer;min-height:42px;color:var(--gris)}
+.controles button{flex:1 1 0;max-width:150px;background:rgba(255,255,255,.92);border:1px solid var(--caqui);padding:8px 4px;font-size:13px;line-height:1.2;letter-spacing:.02em;cursor:pointer;min-height:44px;color:var(--gris)}
+.controles{flex-wrap:nowrap!important}
+.controles button.vista3d[aria-pressed="true"]{background:var(--oliva);border-color:var(--oliva);color:#fff}
 .controles button[aria-pressed="true"]{background:var(--gris);border-color:var(--gris);color:#fff}
 .credito{display:none;position:absolute;left:8px;top:10px;font-size:10px;background:rgba(255,255,255,.75);padding:2px 6px;color:#595959}
 .pista{position:absolute;top:10px;right:12px;font-size:12px;letter-spacing:.08em;background:rgba(255,255,255,.8);padding:3px 8px}
@@ -108,7 +110,7 @@ th,td{text-align:left;padding:8px 0;border-bottom:1px solid rgba(89,89,89,.22);v
 .areas caption{caption-side:top;text-align:left;font-size:13px;letter-spacing:.3em;text-transform:uppercase;color:var(--op-acento);padding-bottom:6px;font-weight:500}
 
 .cambia{font-size:12px;letter-spacing:.26em;text-transform:uppercase;color:var(--op-acento);margin:0 0 10px;font-weight:500}
-.plano{background:var(--op-fondo);margin:0 -8px;padding:8px;transition:background .35s}
+.plano{background:var(--op-fondo);margin:0 -20px;padding:4px;transition:background .35s}
 .plano text{font-family:var(--fuente)}
 .vive{margin:16px 0 0;font-weight:300}
 
@@ -126,7 +128,8 @@ th,td{text-align:left;padding:8px 0;border-bottom:1px solid rgba(89,89,89,.22);v
 .lote{background:#F7F8F2;margin:16px -8px 0;padding:6px}
 .lote svg{width:100%;height:auto}
 .lote text{font-family:var(--fuente)}
-.esquemas{display:grid;gap:12px;margin-top:14px}
+.esquemas{display:grid;gap:12px;margin:14px -20px 0}
+.esquemas figcaption{padding:0 20px}
 .esquemas figure,.materiales figure{margin:0}
 .esquemas img{width:100%;height:auto;background:#fff}
 .esquemas figcaption{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--op-acento);margin-top:4px}
@@ -237,8 +240,9 @@ footer p{font-size:13px;font-weight:300;margin:14px 0 0}
     <div class="credito" id="creditoSat">Terreno: curvas del plano de la parcelación (aprox.)</div>
     <div class="controles">
       <button type="button" id="bCubierta" aria-pressed="false">Quitar cubierta</button>
-      <button type="button" id="bArriba" aria-pressed="false">Desde arriba</button>
-      <button type="button" id="bLote" aria-pressed="false">Ver el lote</button>
+      <button type="button" id="btnLote" class="vista3d" aria-pressed="true">Isométrico lote</button>
+      <button type="button" id="btnCasa" class="vista3d" aria-pressed="false">Isométrico casa</button>
+      <button type="button" id="btnPlanta" class="vista3d" aria-pressed="false">Planta</button>
     </div>
   </div>
   <div class="areas-bloque">
@@ -247,7 +251,7 @@ footer p{font-size:13px;font-weight:300;margin:14px 0 0}
 </div>
 
 <main>
-  <p class="guia"><b>Guía, opciones.</b> La opción en L va de primera. El texto de cada opción va arriba del 3D y las áreas debajo, con la terraza sumada al total. El fondo cambia con la opción (verde claro, arena) y ese mismo color acompaña la planta, las vistas y su columna del comparativo. Los dos 3D salen de los diseños de los chats (la L con el pasillo de vidrio de 2,00 y la casa con patio interno), armados de nuevo con el mismo generador: muros y cubierta plana en bloque de tierra comprimida, placas con canto en concreto, ventanas con marcos grises y parales, muebles, y pocas columnas en V de madera que nacen del terreno sobre dados de concreto. El 3D abre mostrando el lote. El terreno se ajustó: alcobas y media terraza casi a nivel, y de ahí baja fuerte. Se cambian por los modelos de Revit. Presupuesto: área total (con terrazas) por $ 2.240.000/m². Las áreas son libres, medidas en esas plantas; los muros completan el área construida.</p>
+  <p class="guia"><b>Guía, opciones.</b> La opción en L va de primera. El texto de cada opción va arriba del 3D y las áreas debajo, con la terraza sumada al total. El fondo cambia con la opción (verde claro, arena) y ese mismo color acompaña la planta, las vistas y su columna del comparativo. Los dos 3D salen de los diseños de los chats (la L con el pasillo de vidrio de 2,00 y la casa con patio interno), armados de nuevo con el mismo generador: muros y cubierta plana en bloque de tierra comprimida, placas con canto en concreto, ventanas con marcos grises y parales, muebles, y pocas columnas en V de madera que nacen del terreno sobre dados de concreto. El 3D abre mostrando el lote. El terreno se ajustó: alcobas y media terraza casi a nivel, y de ahí baja fuerte. Se cambian por los modelos de Revit. Presupuesto: área total (115 m² en A, 119 m² en B, sin terrazas) por $ 2.240.000/m². Las áreas de cada espacio son libres, medidas en las plantas; las terrazas van aparte, debajo del total.</p>
 
   <section id="planta">
     <div class="rot"><div class="barras"><i></i><i></i><i></i></div><h2>La planta<small data-op-rotulo></small></h2></div>
@@ -259,7 +263,7 @@ footer p{font-size:13px;font-weight:300;margin:14px 0 0}
   <section id="comparar">
     <div class="rot"><div class="barras"><i></i><i></i><i></i></div><h2>Las dos, lado a lado</h2></div>
     <table class="compara" id="compara"></table>
-    <p class="guia"><b>Guía, el comparativo.</b> Las dos últimas filas son las que deciden: lo mejor de cada una y lo que sacrifica. Si quieres recomendar una, dilo aquí en una línea.</p>
+    <p class="guia"><b>Guía, el comparativo.</b> La última fila resume lo mejor de cada una. Si quieres recomendar una, dilo aquí en una línea.</p>
   </section>
 
   <section id="bioclimatica">
@@ -299,15 +303,15 @@ footer p{font-size:13px;font-weight:300;margin:14px 0 0}
 var OPC={
   A:{nombre:'En L',
      texto:'Las alcobas y los servicios van en una barra larga contra la parte alta del lote. La zona social se separa de ella con un pasillo de vidrio de 2,00 m y avanza hacia la vista; la terraza queda en el ángulo de la L y una escalera baja a la terraza de BBQ, 2,50 m más abajo. El frente es de 19,96 m.',
-     esp:[['Alcoba principal','14,4',2.12,2.2],['Baño principal','2,9',5.44,1.64],['Vestier','3,3',5.44,3.04],['Alcoba auxiliar y closet','16,4',9.1,2.4],['Sala, comedor y cocina','45,5',17.0,10.0],['Baño social','2,1',16.84,2.1],['Zona de ropas','4,7',18.8,2.6],['Depósito','4,6',17.9,0.72],['Acceso, pasillos y pasillo de vidrio','21,7',15.07,2.3],['Terraza','12,0',12.1,8.96],['Terraza y zona de BBQ','27,0',15.4,15.7],['Muros y estructura','14,0',8.6,0.52]],
-     total:'168,4',frente:'19,96',presupuesto:'377.216.000',construida:'129,4',terrazas:'39,0',
+     esp:[['Alcoba principal','14,4',2.12,2.2],['Baño principal','2,9',5.44,1.64],['Vestier','3,3',5.44,3.04],['Alcoba auxiliar y closet','16,4',9.1,2.4],['Sala, comedor y cocina','45,5',17.0,10.0],['Baño social','2,1',16.84,2.1],['Zona de ropas','4,7',18.8,2.6],['Depósito','4,6',17.9,0.72],['Acceso, pasillos y pasillo de vidrio','21,7',15.07,2.3],['Terraza','12,0',12.1,8.96],['Terraza y zona de BBQ','27,0',15.4,15.7]],
+     total:'115',frente:'19,96',presupuesto:'257.600.000',terrazas:'39,0',
      mejor:'La sala, la terraza y las alcobas miran a la vista; lo social queda aparte del descanso',sacrifica:'Pide casi 20 m de frente; dos baños quedan sin fachada (extractor o claraboya)',
      vive:'Se entra por atrás, por el acceso, y el pasillo de vidrio lleva a la zona social. Del acceso sale el pasillo de las alcobas: primero la auxiliar con su baño y al fondo la principal, con baño y vestier. Los servicios quedan al otro lado del acceso. La terraza está entre la sala y la barra de alcobas, y de ahí una escalera baja a la BBQ.',
      imagenes:[['imagenes/A_esquema_zonas.png','Esquema de zonas'],['imagenes/A_esquema_social_alcobas.png','Zona social y alcobas']]},
   B:{nombre:'Patio interno',
      texto:'Las alcobas, los servicios y la zona social rodean un patio interior de 5,16 × 5,92 m que se abre hacia la vista. Un pasillo de vidrio une el acceso con la sala, y la terraza queda dentro del patio, protegida del viento. El frente es de 14,86 m.',
-     esp:[['Alcoba principal','14,4',1.92,13.6],['Baño principal','3,0',1.46,9.62],['Vestier','3,1',1.46,10.88],['Alcoba auxiliar','12,6',1.46,6.5],['Baño auxiliar','3,8',1.46,3.42],['Sala, comedor y cocina','46,2',10.0,12.9],['Baño social','3,2',11.64,2.58],['Zona de ropas','5,2',13.6,2.58],['Depósito','4,6',12.84,0.72],['Acceso, pasillos y pasillo de vidrio','28,4',9.97,1.9],['Terraza (dentro del patio)','12,0',6.96,8.26],['Terraza y zona de BBQ','27,0',10.9,17.2],['Muros y estructura','15,8',3.3,7.4]],
-     total:'179,3',frente:'14,86',presupuesto:'401.632.000',construida:'140,3',terrazas:'39,0',
+     esp:[['Alcoba principal','14,4',1.92,13.6],['Baño principal','3,0',1.46,9.62],['Vestier','3,1',1.46,10.88],['Alcoba auxiliar','12,6',1.46,6.5],['Baño auxiliar','3,8',1.46,3.42],['Sala, comedor y cocina','46,2',10.0,12.9],['Baño social','3,2',11.64,2.58],['Zona de ropas','5,2',13.6,2.58],['Depósito','4,6',12.84,0.72],['Acceso, pasillos y pasillo de vidrio','28,4',9.97,1.9],['Terraza (dentro del patio)','12,0',6.96,8.26],['Terraza y zona de BBQ','27,0',10.9,17.2]],
+     total:'119',frente:'14,86',presupuesto:'266.560.000',terrazas:'39,0',
      mejor:'Patio interior protegido del viento; las alcobas abren piso-techo al patio',sacrifica:'Solo la alcoba principal y lo social ven el paisaje; el patio pide canal y drenaje',
      vive:'El acceso y los servicios dan hacia atrás. Del acceso, el pasillo de vidrio baja por un costado del patio hasta la zona social, que mira a la vista. Las alcobas forman el ala izquierda y abren al patio; la principal queda en la esquina, con vista. La terraza está dentro del patio, junto a la sala, y una escalera baja a la BBQ.',
      planta:'imagenes/B_planta.jpg',
@@ -376,7 +380,14 @@ document.getElementById('verGuia').addEventListener('click',function(){document.
     function T(lx,lz){var p=aPlano(lx,lz),n=hgt(p[0],p[1]);if(isNaN(n))return NaN;n-=y0;
       var dm=1e9,zc=lz;pl.forEach(function(r){var cx=Math.max(r[0],Math.min(lx,r[2])),cz=Math.max(r[1],Math.min(lz,r[3])),dd=Math.hypot(lx-cx,lz-cz);if(dd<dm){dm=dd;zc=cz;}});
       var he=nivel-0.03*(zc-zr);if(dm===0)return he;
-      return Math.max(he-0.45*dm,Math.min(he+0.6*dm,n));}
+      var t=Math.max(he-0.45*dm,Math.min(he+0.6*dm,n));
+      // terraza de BBQ: el terreno queda 0,22 m debajo de su piso y empalma alrededor
+      (m.pads||[]).forEach(function(r){var cx=Math.max(r[0],Math.min(lx,r[2])),cz=Math.max(r[1],Math.min(lz,r[3])),dd=Math.hypot(lx-cx,lz-cz),lv=r[4]-0.22;
+        t=dd===0?lv:Math.max(lv-0.5*dd,Math.min(lv+0.7*dd,t));});
+      // escaleras: el terreno pasa por debajo de los escalones
+      (m.escal||[]).forEach(function(e){var cx=Math.max(e[0],Math.min(lx,e[2])),cz=Math.max(e[1],Math.min(lz,e[3])),dd=Math.hypot(lx-cx,lz-cz);
+        var u=(cz-e[1])/(e[3]-e[1]),tope=e[4]+(e[5]-e[4])*u-0.45;t=Math.min(t,tope+0.8*dd);});
+      return t;}
     return {aPlano:aPlano,aLocal:aLocal,y0:y0,T:T};}
   function armar(k){var F=marco(k),m=CASAS[k],PV=[],N=[],I=[],n=141,paso=2.0,cx=m.L/2,cz=m.fondo/2,id=new Int32Array(n*n).fill(-1);
     for(var j=0;j<n;j++)for(var i=0;i<n;i++){var lx=cx+(i-(n-1)/2)*paso,lz=cz+(j-(n-1)/2)*paso,h=F.T(lx,lz);if(isNaN(h))continue;
@@ -399,11 +410,12 @@ document.getElementById('verGuia').addEventListener('click',function(){document.
     // columnas en V de madera que nacen del terreno, pocas: cada ~4,5 m en el perímetro de cada bloque
     function terrazaBajo(x,z,y){var t=null;m.apoyos.forEach(function(q){if(q[4]<y-0.5&&x>q[0]-0.3&&x<q[2]+0.3&&z>q[1]-0.3&&z<q[3]+0.3)t=q[4];});return t;}
     m.apoyos.forEach(function(r){var y=r[4]-0.25,lados=[[[r[0],r[1]],[r[2],r[1]]],[[r[2],r[1]],[r[2],r[3]]],[[r[2],r[3]],[r[0],r[3]]],[[r[0],r[3]],[r[0],r[1]]]];
-      lados.forEach(function(l){var dx=l[1][0]-l[0][0],dz=l[1][1]-l[0][1],L=Math.hypot(dx,dz),nn=Math.max(1,Math.round(L/4.5)),ux=dx/L,uz=dz/L;
-        for(var t=0;t<=nn;t++){var x=l[0][0]+dx*t/nn,z=l[0][1]+dz*t/nn;x-=ux*(t===nn?0.25:(t===0?-0.25:0));z-=uz*(t===nn?0.25:(t===0?-0.25:0));
+      lados.forEach(function(l){var dx=l[1][0]-l[0][0],dz=l[1][1]-l[0][1],L=Math.hypot(dx,dz),nn=Math.max(1,Math.round((L-0.7)/4.5)),ux=dx/L,uz=dz/L;
+        for(var t=0;t<=nn;t++){var sd=0.35+(L-0.7)*t/nn,x=l[0][0]+ux*sd,z=l[0][1]+uz*sd;
           var h=F.T(x,z),tb=terrazaBajo(x,z,r[4]);if(tb!==null)h=Math.max(isNaN(h)?-99:h,tb);if(isNaN(h)||h>y-0.5)continue;
-          var ab=Math.min(1.1,(y-h)*0.35),pie=[x,h-0.2,z];
-          poste(pie,[x-ux*ab,y,z-uz*ab],0.2,'#A8774C');poste(pie,[x+ux*ab,y,z+uz*ab],0.2,'#A8774C');
+          var ab=Math.min(1.1,(y-h)*0.35),a1=Math.min(ab,sd-0.1),a2=Math.min(ab,L-sd-0.1),pie=[x,h-0.2,z];
+          if(a1>0.15)poste(pie,[x-ux*a1,y,z-uz*a1],0.2,'#A8774C');if(a2>0.15)poste(pie,[x+ux*a2,y,z+uz*a2],0.2,'#A8774C');
+          if(a1<=0.15||a2<=0.15)poste(pie,[x,y,z],0.2,'#A8774C');
           caja(x-0.25,h-0.3,z-0.25,x+0.25,h+0.05,z+0.25,'#A9A79F');}});});
     function cinta(pl,an,col,alza){var c=hex(col);for(var q=0;q<pl.length-1;q++){var a=F.aLocal(pl[q][0],pl[q][1]),b=F.aLocal(pl[q+1][0],pl[q+1][1]);
         var ya=F.T(a[0],a[1])+alza,yb=F.T(b[0],b[1])+alza;if(isNaN(ya)||isNaN(yb))continue;var dx=b[0]-a[0],dz=b[1]-a[1],l=Math.sqrt(dx*dx+dz*dz)||1,nx=-dz/l*an/2,nz=dx/l*an/2;
@@ -446,6 +458,7 @@ document.getElementById('verGuia').addEventListener('click',function(){document.
     gl.viewport(0,0,w,h);gl.clearColor(0,0,0,0);gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);
     if(!listo)return;
     var m=CASAS[actual],asp=w/h,tam=Math.max(m.L,m.fondo*1.15),dist=E.dist*(tam/9*0.5+0.5)/Math.pow(Math.min(1,asp),0.75);
+    if(E.alt>1.2){var tg=Math.tan(0.31),ajuste=Math.max((m.fondo/2+0.8)/tg,(m.L/2+0.8)/(tg*asp))+3.5;var u=Math.min(1,(E.alt-1.2)/0.33);dist=dist*(1-u)+ajuste*u;}   // planta: siempre cerca y completa
     var c=[m.L/2,1.2,m.fondo/2],e=[c[0]+dist*Math.cos(E.alt)*Math.sin(E.giro),c[1]+dist*Math.sin(E.alt),c[2]+dist*Math.cos(E.alt)*Math.cos(E.giro)];
     var up=E.alt>1.5?[-Math.sin(E.giro),0,-Math.cos(E.giro)]:[0,1,0];
     var VP=new Float32Array(mul(persp(0.62,asp,0.5,900),mira(e,c,up)));
@@ -482,13 +495,16 @@ document.getElementById('verGuia').addEventListener('click',function(){document.
   function pon(id,on,txt){var b=bt[id];b.setAttribute('aria-pressed',on?'true':'false');if(txt)b.textContent=txt;}
   function esta(id){return bt[id].getAttribute('aria-pressed')==='true';}
   function boton(id,fn){var b=bt[id]=document.getElementById(id);b.addEventListener('click',function(){fn(!esta(id));pide();});}
-  function camara(){meta.alt=esta('bArriba')?1.53:(esta('bLote')?0.62:0.42);meta.dist=esta('bLote')?105:(esta('bArriba')?34:31);}
-  boton('bCubierta',function(on){E.cubierta=!on;pon('bCubierta',on,on?'Poner cubierta':'Quitar cubierta');});
-  boton('bArriba',function(on){pon('bArriba',on,on?'De lado':'Desde arriba');E.auto=false;E.giro=on?0:0.62;
-    if(on&&E.cubierta&&!esta('bLote')){E.cubierta=false;pon('bCubierta',true,'Poner cubierta');}camara();});
-  boton('bLote',function(on){pon('bLote',on,on?'Ver la casa':'Ver el lote');
-    if(on&&!E.cubierta){E.cubierta=true;pon('bCubierta',false,'Quitar cubierta');}camara();});
-  pon('bLote',true,'Ver la casa');camara();E.alt=meta.alt;E.dist=meta.dist;   // abre mostrando el lote
+  // vistas fijas: cada botón lleva a una vista; el de cubierta la quita o la pone
+  var modo='lote',VISTAS={lote:{alt:0.62,dist:105},casa:{alt:0.42,dist:31},planta:{alt:1.53,dist:21}};
+  function ponCubierta(on){E.cubierta=on;pon('bCubierta',!on,on?'Quitar cubierta':'Poner cubierta');}
+  function irA(v){modo=v;['btnLote','btnCasa','btnPlanta'].forEach(function(id){pon(id,id==='btn'+v.charAt(0).toUpperCase()+v.slice(1));});
+    meta.alt=VISTAS[v].alt;meta.dist=VISTAS[v].dist;
+    if(v==='planta'){E.auto=false;E.giro=0;ponCubierta(false);}else{if(E.alt>1.5)E.giro=0.62;ponCubierta(true);}
+    pide();}
+  boton('bCubierta',function(){ponCubierta(!E.cubierta);});
+  ['btnLote','btnCasa','btnPlanta'].forEach(function(id){bt[id]=document.getElementById(id);bt[id].addEventListener('click',function(){irA(id.slice(3).toLowerCase());});});
+  irA('lote');E.alt=meta.alt;E.dist=meta.dist;   // abre mostrando el lote
   pide();
   window.__modelo={E:E,meta:meta,pide:pide,dibuja:dibuja};
 })();
@@ -497,14 +513,13 @@ document.getElementById('verGuia').addEventListener('click',function(){document.
 (function(){
   var ACENTO={A:'#424D22',B:'#7B7C52'};
   function planta(op){
-    if(OPC[op].planta)return '<img src="'+OPC[op].planta+'" alt="Planta general de la opción '+op+'">';
+    if(OPC[op].planta)return '<a href="'+OPC[op].planta+'" target="_blank" rel="noopener"><img src="'+OPC[op].planta+'" alt="Planta general de la opción '+op+'"></a>';
     var m=CASAS[op];if(!m)return '<p class="vive">Cargando la planta…</p>';
-    var pl=m.planta,bx=pl.caja,mg=0.45,S=100,ac=ACENTO[op];
-    var x0=Math.round((bx[0]-mg)*S),y0=Math.round((bx[1]-mg)*S),w=Math.round((bx[2]-bx[0]+2*mg)*S),k=w/1000,h=Math.round((bx[3]-bx[1]+2*mg)*S+60*k);
+    var pl=m.planta,bx=pl.caja,mg=0.15,S=100,ac=ACENTO[op];
+    var x0=Math.round((bx[0]-mg)*S),y0=Math.round((bx[1]-mg)*S),w=Math.round((bx[2]-bx[0]+2*mg)*S),k=w/1000,h=Math.round((bx[3]-bx[1]+2*mg)*S);
     var o=pl.svg,rad=Math.round(27*k),fs=Math.round(31*k);
     OPC[op].esp.forEach(function(t,i){if(/^Muros/.test(t[0]))return;var X=Math.round(t[2]*S),Y=Math.round(t[3]*S);
       o+='<circle cx="'+X+'" cy="'+Y+'" r="'+rad+'" fill="'+ac+'" stroke="#fff" stroke-width="'+Math.round(4*k)+'"/><text x="'+X+'" y="'+(Y+Math.round(fs*0.35))+'" fill="#fff" font-weight="500" font-size="'+fs+'" text-anchor="middle">'+(i+1)+'</text>';});
-    o+='<text x="'+(x0+Math.round(mg*S))+'" y="'+(y0+h-Math.round(16*k))+'" font-size="'+Math.round(24*k)+'" fill="#595959" font-weight="300">Frente '+OPC[op].frente+' m. Arriba, la parte alta del lote; abajo, la vista.</text>';
     return '<svg viewBox="'+x0+' '+y0+' '+w+' '+h+'" role="img" aria-label="Planta esquemática de la opción '+op+'">'+o+'</svg>';
   }
   function pinta(){
@@ -514,11 +529,11 @@ document.getElementById('verGuia').addEventListener('click',function(){document.
     document.getElementById('opTitulo').textContent='Opción '+actual+', '+d.nombre.toLowerCase();
     document.getElementById('opTexto').textContent=d.texto;
     document.querySelectorAll('[data-op-rotulo]').forEach(function(e){e.textContent='Opción '+actual+', '+d.nombre.toLowerCase();});
-    document.getElementById('areas').innerHTML='<caption>Áreas de la opción '+actual+'</caption>'+d.esp.map(function(a,i){return '<tr><td>'+(/^Muros/.test(a[0])?'':(i+1))+'</td><td>'+a[0]+'</td><td>'+a[1]+' m²</td></tr>';}).join('')+
-      '<tr class="total"><td></td><td>Área total</td><td>'+d.total+' m²</td></tr><tr class="inv"><td></td><td>Construida a fachadas '+d.construida+' m², más '+d.terrazas+' m² de terrazas</td><td></td></tr><tr class="inv"><td></td><td>Presupuesto aproximado</td><td>$ '+d.presupuesto+'</td></tr><tr class="inv"><td></td><td>Valor del m²</td><td>$ 2.240.000</td></tr>';
+    document.getElementById('areas').innerHTML='<caption>Áreas de la opción '+actual+'</caption>'+d.esp.map(function(a,i){return /^Terraza/.test(a[0])?'':'<tr><td>'+(i+1)+'</td><td>'+a[0]+'</td><td>'+a[1]+' m²</td></tr>';}).join('')+
+      '<tr class="total"><td></td><td>Área total</td><td>'+d.total+' m²</td></tr>'+d.esp.map(function(a,i){return /^Terraza/.test(a[0])?'<tr class="inv"><td>'+(i+1)+'</td><td>'+a[0]+'</td><td>'+a[1]+' m²</td></tr>':'';}).join('')+'<tr class="inv"><td></td><td>Presupuesto aproximado</td><td>$ '+d.presupuesto+'</td></tr><tr class="inv"><td></td><td>Valor del m²</td><td>$ 2.240.000</td></tr>';
     document.getElementById('plano').innerHTML=planta(actual);
-    document.getElementById('esquemas').innerHTML=d.imagenes.map(function(m){return '<figure><img src="'+m[0]+'" alt="'+m[1]+'" loading="lazy"><figcaption>'+m[1]+'</figcaption></figure>';}).join('');
-    var k=['A','B'],f=[['Área total',function(x){return x.total+' m²';}],['Frente',function(x){return x.frente+' m';}],['Presupuesto aprox.',function(x){return '$ '+x.presupuesto;}],['Valor del m²',function(){return '$ 2.240.000';}],['Lo mejor',function(x){return x.mejor;}],['Sacrifica',function(x){return x.sacrifica;}]];
+    document.getElementById('esquemas').innerHTML=d.imagenes.map(function(m){return '<figure><a href="'+m[0]+'" target="_blank" rel="noopener"><img src="'+m[0]+'" alt="'+m[1]+'" loading="lazy"></a><figcaption>'+m[1]+'</figcaption></figure>';}).join('');
+    var k=['A','B'],f=[['Área total',function(x){return x.total+' m²';}],['Presupuesto aprox.',function(x){return '$ '+x.presupuesto;}],['Valor del m²',function(){return '$ 2.240.000';}],['Lo mejor',function(x){return x.mejor;}]];
     document.getElementById('compara').innerHTML='<thead><tr><th scope="row"></th>'+k.map(function(q){return '<th class="c'+q+(q===actual?' activa':'')+'">'+q+'<small>'+OPC[q].nombre+'</small>'+'</th>';}).join('')+'</tr></thead><tbody>'+
       f.map(function(row){return '<tr><th scope="row">'+row[0]+'</th>'+k.map(function(q){return '<td class="c'+q+(q===actual?' activa':'')+'">'+row[1](OPC[q])+'</td>';}).join('')+'</tr>';}).join('')+'</tbody>';
     alCambiar.forEach(function(fn){fn();});
