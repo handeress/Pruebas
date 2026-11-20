@@ -13,7 +13,7 @@ import numpy as np
 AQUI = os.path.dirname(os.path.abspath(__file__))
 RAIZ = os.path.dirname(AQUI)
 P = 0.40          # piso sobre el punto más alto del terreno bajo la casa
-RETIRO = 10.0     # m a los linderos 14-13 y 14-17, medido al borde de cubierta o terraza
+RETIRO = {"13": 10.0, "17": 20.0}   # m a cada lindero desde la esquina 14, al borde de cubierta o terraza
 
 
 def b64(a, t):
@@ -65,8 +65,20 @@ def casa_L():
         C = np.frombuffer(base64.b64decode(d[k]["c"]), np.uint8).reshape(-1, 3, 3)[:, 0].copy()
         return T, C
     out = {}
-    # muros: blanco del 3D original
-    out["base"] = [lee("muro")]
+    # bloques rectangulares: se sube la parte alta de muros, vidrios y marcos hasta una cubierta plana
+    ALTO = {"priv": 2.976, "soc": 3.651}
+    def bloque(x, z):
+        if z <= -3.10: return "priv", 2.4 + 0.15 * (z + 7.0)
+        if z >= -1.20 and x >= 4.0: return "soc", 2.4 + 0.15 * (z + 1.16)
+        return None, None
+    def estirar(T):
+        V = T.reshape(-1, 3)
+        for i in range(len(V)):
+            b, h = bloque(V[i, 0], V[i, 2])
+            if b and V[i, 1] > 2.0 and h > 2.0:
+                V[i, 1] = 2.0 + (V[i, 1] - 2.0) * (ALTO[b] - 2.0) / (h - 2.0)
+        return V.reshape(-1, 3, 3)
+    Tm, Cm = lee("muro"); out["base"] = [(estirar(Tm), Cm)]
     # opaco: sin árboles ni el terreno supuesto; sin pilares, dados y contenciones (se apoya en el terreno real)
     T, C = lee("opaco")
     fuera = {(51, 81, 56), (89, 63, 45), (22, 22, 25), (153, 150, 142), (178, 178, 173)}
@@ -74,13 +86,24 @@ def casa_L():
     madera = (C == (119, 81, 51)).all(1)
     m &= ~(madera & (T[:, :, 1].min(1) < -0.2))          # troncos de los pilares árbol
     m &= (np.abs(T[:, :, 0]).max(1) < 12) & (T[:, :, 2].min(1) > -9) & (T[:, :, 2].max(1) < 12)
-    out["base"].append((T[m], C[m]))
-    out["cub"] = [lee("cubierta")]
-    out["vid"] = [lee("vidrio")]
+    m &= ~(C == (51, 51, 51)).all(1)                       # barandas de terraza y escalera
+    m &= ~(madera & (T[:, :, 0].max(1) < 4.05) & (T[:, :, 2].min(1) > 0.3))   # pasamanos de madera
+    T, C = estirar(T[m]), C[m].copy()
+    C[(C == (43, 43, 43)).all(1)] = (128, 128, 128)        # marcos grises
+    out["base"].append((T, C))
+    Tv, Cv = lee("vidrio")
+    mv = ~((Tv[:, :, 0].max(1) < 4.05) & (Tv[:, :, 2].min(1) > 0.3))   # vidrio de barandas
+    out["vid"] = [(estirar(Tv[mv]), Cv[mv])]
+    M = Malla(); BL = (237, 234, 226)
+    M.caja("cub", -10.0, -7.0, 9.96, -3.16, ALTO["priv"], ALTO["priv"] + 0.15, BL)
+    M.caja("cub", 4.1, -1.16, 9.96, 7.18, ALTO["soc"], ALTO["soc"] + 0.15, BL)
+    out["cub"] = [(np.array(M.g["cub"][0], np.float32), np.array(M.g["cub"][1], np.uint8))]
     # bloques y terrazas en coordenadas de la malla (x, z) para apoyos y planta
     apoyos = [(-10, -7, 9.96, -3.16, 0.0), (4.1, -3.16, 5.92, -1.16, 0.0), (4.1, -1.16, 9.96, 7.18, 0.0)]
     apoyos.append((0.1, 0.46, 4.1, 3.46, 0.0))        # terraza 15
     apoyos.append((0.96, 7.18, 9.96, 10.18, -2.5))    # terraza 17 (BBQ)
+    out["plataforma"] = [(-10.0, -7.6, 10.5, 2.0)]          # alcobas y mitad de la terraza 15 a nivel (malla)
+    out["zref"] = -5.1
     return out, apoyos
 
 
@@ -118,9 +141,9 @@ B_DATOS = dict(
     patio=(3.84, 3.84, 9.00, 9.76), deck=(4.96, 6.76, 8.96, 9.76), bbq=(6.38, 15.70, 15.38, 18.70),
     stairs=(14.18, 9.88, 15.38, 15.70, 1.0),
 )
-H_BAJO, H_ALTO = 2.70, 3.30
+H_BAJO, H_ALTO = 3.00, 3.00     # cubiertas planas: bloques rectangulares
 GRIS_MURO = (214, 213, 207); MADERA = (168, 119, 76); MADERA_OSC = (119, 81, 51); DECK = (142, 104, 71)
-PISO_BORDE = (150, 146, 138); TEJA = (68, 71, 73); SOFITO = (188, 142, 94); VIDRIO = (147, 178, 198); MARCO = (43, 43, 43)
+PISO_BORDE = (150, 146, 138); TEJA = (68, 71, 73); SOFITO = (188, 142, 94); VIDRIO = (147, 178, 198); MARCO = (128, 128, 128)
 
 
 def casa_patio():
@@ -183,50 +206,25 @@ def casa_patio():
             elif k == "D": W(2.1)
             elif k == "O": W(2.4)
             elif k == "G": G(0, H_BAJO)
-    # cubiertas a una agua (bajan hacia atrás, el alero de 0.40 alrededor)
+    # cubiertas planas del color de los muros, sin aleros
     for b in D["blocks"]:
-        _, x0, z0, x1, z1, lo = b; f = alto(b[0]); e = 0.4
-        M.caja("cub", x0 - e, z0 - e, x1 + e, z1 + e, 0, 0, TEJA, ytop=lambda x, z, f=f: f(x, z) + 0.2)
-        # quitar el fondo plano a y=0 de la caja de cubierta: se rehace con tapa inferior inclinada
-    M.g["cub"] = ([], [])
-    for b in D["blocks"]:
-        _, x0, z0, x1, z1, lo = b; f = alto(b[0]); e = 0.4
-        P_ = [(x0 - e, z0 - e), (x1 + e, z0 - e), (x1 + e, z1 + e), (x0 - e, z1 + e)]
-        lo_ = [(x, f(min(max(x, x0), x1), min(max(z, z0), z1)) + 0.02 - (0.15 * (z0 - z) if (lo == "N" and z < z0) else 0) - (0.15 * (x0 - x) if (lo == "W" and x < x0) else 0), z) for x, z in P_]
-        hi_ = [(x, y + 0.18, z) for x, y, z in lo_]
-        M.quad("cub", hi_[0], hi_[1], hi_[2], hi_[3], TEJA)
-        M.quad("cub", lo_[0], lo_[3], lo_[2], lo_[1], SOFITO)
-        for i in range(4):
-            j = (i + 1) % 4
-            M.quad("cub", lo_[i], lo_[j], hi_[j], hi_[i], MADERA_OSC)
+        _, x0, z0, x1, z1, lo = b
+        M.caja("cub", x0, z0, x1, z1, H_ALTO, H_ALTO + 0.15, GRIS_MURO)
     for g in D["glass"]:
         M.caja("vid", g[0] - 0.1, g[1], g[2] + 0.1, g[3], H_BAJO, H_BAJO + 0.04, VIDRIO)
         for zz in np.arange(g[1] + 0.3, g[3], 1.0):
             M.caja("base", g[0] - 0.1, zz, g[2] + 0.1, zz + 0.08, H_BAJO - 0.1, H_BAJO, MADERA)
-    # columnas dobles de madera en las esquinas exteriores y al frente del social
-    def col2(x, z, eje="x"):
-        for k in (-0.11, 0.11):
-            cx, cz = (x + k, z) if eje == "x" else (x, z + k)
-            M.caja("base", cx - 0.06, cz - 0.06, cx + 0.06, cz + 0.06, -0.25, 0, MADERA)
-    pts = []
-    for b in D["blocks"]:
-        _, x0, z0, x1, z1, lo = b; f = alto(b[0])
-        for x, z in ((x0, z0), (x1, z0), (x1, z1), (x0, z1)):
-            for k in (-0.11, 0.11):
-                cx, cz = (x + k, z)
-                M.caja("base", cx - 0.06, cz - 0.06, cx + 0.06, cz + 0.06, 0, f(x, z) + 0.02, MADERA)
-    for x in np.arange(7.0, 14.0, 2.4):
-        f = alto("S")
-        for k in (-0.11, 0.11):
-            M.caja("base", x + k - 0.06, 15.70 - 0.02, x + k + 0.06, 15.70 + 0.10, 0, f(x, 15.7) + 0.02, MADERA)
     out = {k: [(np.array(v[0], np.float32), np.array(v[1], np.uint8))] for k, v in M.g.items() if v[0]}
+    out_extra = dict(plataforma=[(0.0, 3.0, 3.84, 15.70), (0.0, 0.0, 14.86, 8.26)], zref=9.0)   # ala de alcobas y mitad de la terraza
     apoyos = [(b[1], b[2], b[3], b[4], 0.0) for b in D["blocks"]] + [tuple(D["glass"][0]) + (0.0,), tuple(D["patio"]) + (0.0,), tuple(D["bbq"]) + (-2.5,), (sx0, sz0, sx1, sz0 + ld, 0.0)]
+    out.update(out_extra)
     return out, apoyos
 
 
 # ---------------------------------------------------------------- implantación
 def implantar(grupos, apoyos, sitio):
     """Lleva la casa al marco local (x, z >= 0, piso en y = P) y calcula el origen en el lote."""
+    plat = grupos.pop("plataforma"); zref = grupos.pop("zref")
     todos = np.concatenate([T.reshape(-1, 3) for g in grupos.values() for T, C in g])
     mn = todos.min(0); mx = todos.max(0)
     sh = np.array([-mn[0], P, -mn[2]], np.float32)
@@ -248,16 +246,18 @@ def implantar(grupos, apoyos, sitio):
         n = np.array([-u[1], u[0]])
         cen = np.mean([V[k] for k in V], 0)
         if n @ (cen - V["14"]) < 0: n = -n
-        filas.append(n); b.append(RETIRO + n @ V["14"] - (xz @ R.T @ n).min())
+        filas.append(n); b.append(RETIRO[otro] + n @ V["14"] - (xz @ R.T @ n).min())
     O = np.linalg.solve(np.array(filas), np.array(b))
     huella = xz @ R.T + O
     dist = {o: float(min((huella - V["14"]) @ f)) for o, f in zip(("13", "17"), filas)}
     return dict(L=round(Lw, 3), fondo=round(Fd, 3), P=P, grupos=res, apoyos=ap,
                 origen=[round(float(O[0]), 3), round(float(O[1]), 3)], frente=[round(float(d[0]), 4), round(float(d[1]), 4)],
-                retiros=dist), sh
+                retiros=dist, plataforma=[[round(float(r[0] + sh[0]), 2), round(float(r[1] + sh[2]), 2), round(float(r[2] + sh[0]), 2), round(float(r[3] + sh[2]), 2)] for r in plat],
+                zref=round(float(zref + sh[2]), 2)), sh
 
 
 VISTA_PLANO = (-153.0, 382.0)   # dirección de la vista principal marcada por Andrés en el plano del lote (px, 14 arriba a la izq.)
+BARRA_PLANO = (265.0, 93.0)     # línea azul con la que se alinea la barra de alcobas (px, mismo plano)
 ACCESO = (16.0, 7.0)            # zona de acceso en la esquina 14: m a lo largo de 14-13 y de 14-17
 ENTRADA = (3.5, 6.5)            # tramo del lindero 14-17 (m desde 14) por donde se entra desde la vía peatonal
 
@@ -267,7 +267,10 @@ def frente_y_acceso(sitio):
     img = {"14": (118, 312), "13": (604, 234), "17": (282, 872), "18": (764, 795)}
     A = np.array([np.r_[V[n], 1] for n in img]); B = np.array([img[n] for n in img], float)
     M = np.linalg.lstsq(A, B, rcond=None)[0][:2].T; U, _, Vt = np.linalg.svd(M); Q = U @ Vt
-    v = np.array(VISTA_PLANO); v /= np.linalg.norm(v); d = v @ Q
+    v = np.array(VISTA_PLANO); v /= np.linalg.norm(v)
+    e = np.array(BARRA_PLANO); e /= np.linalg.norm(e); ds = np.array([-e[1], e[0]])
+    if ds @ v < 0: ds = -ds                                  # frente perpendicular a la barra, hacia la vista
+    d = ds @ Q
     sitio["sitio"]["frente"] = [round(float(d[0]), 4), round(float(d[1]), 4)]
     u13 = (V["13"] - V["14"]) / np.linalg.norm(V["13"] - V["14"]); u17 = (V["17"] - V["14"]) / np.linalg.norm(V["17"] - V["14"])
     a, b = ACCESO
