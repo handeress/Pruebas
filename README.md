@@ -21,5 +21,5 @@ Se ve en https://handeress.github.io/Pruebas/ cuando GitHub Pages está activo (
 
 ## Revisión de actividades (app Presupuestos)
 
-- `revision-actividades/index.html`: lista de chequeo de las 175 actividades iniciales de la app Presupuestos, con casilla de aprobación y observación por actividad. Guarda en el celular y el botón de abajo copia el resultado para pegarlo en el chat.
+- `revision-actividades/index.html`: lista de chequeo de las actividades por revisar de la app Presupuestos, con casilla de aprobación y observación por actividad. Guarda en el celular y el botón de abajo copia el resultado para pegarlo en el chat.
 - Se ve en https://handeress.github.io/Pruebas/revision-actividades/
