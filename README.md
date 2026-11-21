@@ -18,3 +18,8 @@ Se ve en https://handeress.github.io/Pruebas/ cuando GitHub Pages está activo (
 - `casas/A.json` y `casas/B.json`: mallas 3D de cada opción, su planta esquemática y su ubicación en el lote. Las arma `herramientas/casas.py` (A sale de `herramientas/fuentes/casa_L_geo.json`, el 3D de la casa en L; B se levanta en el script desde la variación con patio).
 - Implantación: cerca de la esquina 14, con 10 m (`RETIRO`) a los linderos 14-13 y 14-17, medidos al borde de cubiertas y terrazas. El frente mira hacia donde baja el terreno (`sitio.frente`).
 - El mismo script dibuja el plano del lote (general y detalle de la esquina 14) dentro de `index.html`, entre `<!--LOTE-->` y `<!--/LOTE-->`.
+
+## Revisión de actividades (app Presupuestos)
+
+- `revision-actividades/index.html`: lista de chequeo de las 175 actividades iniciales de la app Presupuestos, con casilla de aprobación y observación por actividad. Guarda en el celular y el botón de abajo copia el resultado para pegarlo en el chat.
+- Se ve en https://handeress.github.io/Pruebas/revision-actividades/
